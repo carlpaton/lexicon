@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Web.Models.LexiconEntryViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Lexicon Entry</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@if (TempData["message"] != null)
+{
+<div class="text-info">
+    @TempData["message"]
+</div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PlatformId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SubCategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LexiconEntryTypeId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DropDownListFor(modelItem => item.CategoryId, (List<SelectListItem>)ViewData["Category_SelectList"], new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.DropDownListFor(modelItem => item.PlatformId, (List<SelectListItem>)ViewData["Platform_SelectList"], new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.DropDownListFor(modelItem => item.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.DropDownListFor(modelItem => item.LexiconEntryTypeId, (List<SelectListItem>)ViewData["LexiconEntryType_SelectList"], new { @class = "form-control", @disabled = "disabled" })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <div class="link">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id },
+                        new { onclick = "return confirm('Are you sure you want to delete this entry?');" })
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style type="text/css">
+    .link {
+        width: 85px;
+    }
+
+        .link a {
+            font-size: 0.81rem;
+        }
+</style>

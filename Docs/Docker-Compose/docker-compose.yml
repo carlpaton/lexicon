@@ -1,0 +1,39 @@
+version: "3.6"
+services:
+
+  lexicon-db:
+    container_name: "lexicon-db"
+    image: "microsoft/mssql-server-linux:2017-CU13"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Password123  
+    ports:
+      - "1433:1433"
+
+  lexicon-flywaycopy:
+    container_name: "lexicon-flywaycopy"
+    build: ./
+    image: lexicon-flywaycopy
+    volumes:
+      - lexicon-flyway:/flyway/sql
+    depends_on:
+      - lexicon-db  
+      
+  lexicon-baseline:
+    container_name: "lexicon-baseline"
+    image: "boxfuse/flyway:5.1"
+    command: -url=jdbc:jtds:sqlserver://lexicon-db:1433/lexicon -user=sa -password=Password123 baseline
+    depends_on:
+      - lexicon-flywaycopy
+
+  lexicon-migrate:
+    container_name: "lexicon-migrate"
+    image: "boxfuse/flyway:5.1"
+    command: -url=jdbc:jtds:sqlserver://lexicon-db:1433/lexicon -user=sa -password=Password123 migrate
+    volumes:
+      - lexicon-flyway:/flyway/sql
+    depends_on:
+      - lexicon-baseline      
+
+volumes:
+    lexicon-flyway:
