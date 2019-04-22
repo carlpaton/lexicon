@@ -21,4 +21,12 @@ namespace Web.Models
         [Required]
         public string Description { get; set; }
     }
+
+    public class LexiconEntryTypeViewModel
+    {
+        public int Id { get; set; }
+
+        [Required]
+        public string Description { get; set; }
+    }
 }
