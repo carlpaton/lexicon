@@ -9,68 +9,68 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    public class CategoryController : Controller
+    public class PlatformController : Controller
     {
-private readonly ICategoryRepository _categoryRepository;
+        private readonly IPlatformRepository _platformRepository;
         private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryRepository categoryRepository, IMapper mapper)
+        public PlatformController(IPlatformRepository platformRepository, IMapper mapper)
         {
-            _categoryRepository = categoryRepository;
+            _platformRepository = platformRepository;
             _mapper = mapper;
         }
 
-        // GET: Category
+        // GET: Platform
         public IActionResult Index()
         {
-            var dbModel = _categoryRepository.SelectList();
-            var vwModel = _mapper.Map<List<CategoryViewModel>>(dbModel);
+            var dbModel = _platformRepository.SelectList();
+            var vwModel = _mapper.Map<List<PlatformViewModel>>(dbModel);
 
             return View(vwModel);
         }
 
-        // GET: Category/Create
+        // GET: Platform/Create
         public IActionResult Create()
         {
             return View();
         }
-        
-        // POST: Category/Create
+
+        // POST: Platform/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Description")] CategoryViewModel vwModel)
+        public IActionResult Create([Bind("Description")] PlatformViewModel vwModel)
         {
             if (ModelState.IsValid)
             {
-                var dbModel = _mapper.Map<CategoryModel>(vwModel);
-                _categoryRepository.Insert(dbModel);
+                var dbModel = _mapper.Map<PlatformModel>(vwModel);
+                _platformRepository.Insert(dbModel);
 
-                ViewData["message"] = "Category added successfully.";
+                ViewData["message"] = "Platform added successfully.";
                 ModelState.SetModelValue("Description", new ValueProviderResult(""));
 
-                return View(new CategoryViewModel());
+                return View(new PlatformViewModel());
             }
             return View(vwModel);
         }
 
-        // GET: Category/Edit/5
+        // GET: Platform/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
               return NotFound();
 
-            var dbModel = _categoryRepository.Select(id ?? 0);
+            var dbModel = _platformRepository.Select(id ?? 0);
             if (dbModel.Id == 0)
                 return NotFound();
 
-            var vwModel = _mapper.Map<CategoryViewModel>(dbModel);
+            var vwModel = _mapper.Map<PlatformViewModel>(dbModel);
             return View(vwModel);
         }
 
-        // POST: Category/Edit/5
+        // POST: Platform/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Description")] CategoryViewModel vwModel)
+        public IActionResult Edit(int id, [Bind("Id,Description")] PlatformViewModel vwModel)
         {
             if (id != vwModel.Id)
                 return NotFound();
@@ -79,10 +79,10 @@ private readonly ICategoryRepository _categoryRepository;
             {
                 try
                 {
-                    var dbModel = _mapper.Map<CategoryModel>(vwModel);
-                    _categoryRepository.Update(dbModel);
+                    var dbModel = _mapper.Map<PlatformModel>(vwModel);
+                    _platformRepository.Update(dbModel);
 
-                    ViewData["message"] = "Category updated successfully.";
+                    ViewData["message"] = "Platform updated successfully.";
                 }
                 catch (Exception ex)
                 {
@@ -102,9 +102,9 @@ private readonly ICategoryRepository _categoryRepository;
         /// <returns></returns>
         public IActionResult Delete(int id)
         {
-            _categoryRepository.Delete(id);
+            _platformRepository.Delete(id);
             
-            TempData["message"] = "Category deleted successfully.";
+            TempData["message"] = "Platform deleted successfully.";
             return RedirectToAction("Index");
         }
     }
