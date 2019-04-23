@@ -2,10 +2,8 @@
 
 namespace Web.Models
 {
-    public class LexiconEntryViewModel
+    public class LexiconEntryViewModel : BaseModel
     {
-        public int Id { get; set; }
-
         [Display(Name = "Category")]
         public int CategoryId { get; set; }
         
@@ -13,20 +11,14 @@ namespace Web.Models
         public int PlatformId { get; set; }
 
         [Display(Name = "Sub Category")]
-        public int SubCategoryId { get; set; }
+        public int? SubCategoryId { get; set; }
 
         [Display(Name = "Entry Type")]
         public int LexiconEntryTypeId { get; set; }
-
-        [Required]
-        public string Description { get; set; }
     }
 
-    public class LexiconEntryTypeViewModel
+    public class LexiconEntryTypeViewModel : BaseModel
     {
-        public int Id { get; set; }
 
-        [Required]
-        public string Description { get; set; }
     }
 }

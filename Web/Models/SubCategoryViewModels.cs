@@ -1,12 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Web.Models
+﻿namespace Web.Models
 {
-    public class SubCategoryViewModel
+    public class SubCategoryViewModel : BaseModel
     {
-        public int Id { get; set; }
 
-        [Required]
-        public string Description { get; set; }
     }
 }

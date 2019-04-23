@@ -15,14 +15,14 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="LexiconEntryTypeId" class="control-label"></label>
+                @Html.DropDownListFor(Model => Model.LexiconEntryTypeId, (List<SelectListItem>)ViewData["LexiconEntryType_SelectList"], "-- Please Select --", new { @class = "form-control" })
+                <span asp-validation-for="LexiconEntryTypeId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
                 @Html.DropDownListFor(Model => Model.CategoryId, (List<SelectListItem>)ViewData["Category_SelectList"], "-- Please Select --", new { @class = "form-control" })
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PlatformId" class="control-label"></label>
-                @Html.DropDownListFor(Model => Model.PlatformId, (List<SelectListItem>)ViewData["Platform_SelectList"], "-- Please Select --", new { @class = "form-control" })
-                <span asp-validation-for="PlatformId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="SubCategoryId" class="control-label"></label>
@@ -30,13 +30,13 @@
                 <span asp-validation-for="SubCategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="LexiconEntryTypeId" class="control-label"></label>
-                @Html.DropDownListFor(Model => Model.LexiconEntryTypeId, (List<SelectListItem>)ViewData["LexiconEntryType_SelectList"], "-- Please Select --", new { @class = "form-control" })
-                <span asp-validation-for="LexiconEntryTypeId" class="text-danger"></span>
+                <label asp-for="PlatformId" class="control-label"></label>
+                @Html.DropDownListFor(Model => Model.PlatformId, (List<SelectListItem>)ViewData["Platform_SelectList"], "-- Please Select --", new { @class = "form-control" })
+                <span asp-validation-for="PlatformId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <textarea asp-for="Description" class="form-control" ></textarea>
+                <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
