@@ -21,7 +21,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Lexicon</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -29,19 +29,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" asp-controller="LexiconEntry" asp-action="Index">Lexicon Entry</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Maintenance
-                            </a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="LexiconEntry" asp-action="Index">Lexicon Entry</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Index">Category</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Platform" asp-action="Index">Platform</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="SubCategory" asp-action="Index">Sub Category</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="EntryType" asp-action="Index">Entry Type</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Maintenance</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown01">
+                                
+                                <a class="dropdown-item" asp-controller="Category" asp-action="Index">Category</a>
+                                <a class="dropdown-item" asp-controller="Platform" asp-action="Index">Platform</a>
+                                <a class="dropdown-item" asp-controller="SubCategory" asp-action="Index">Sub Category</a>
+                                <a class="dropdown-item" asp-controller="EntryType" asp-action="Index">Entry Type</a>
                             </div>
                         </li>
                     </ul>
@@ -57,8 +54,8 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2019 - Lexicon - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container cp-footer-link">
+            &copy; @DateTime.Now.Year Lexicon | <a asp-controller="Home" asp-action="Privacy">Licence</a> | <a href="https://getbootstrap.com/docs/4.3/" target="_blank">Powered By Bootstrap</a>
         </div>
     </footer>
 

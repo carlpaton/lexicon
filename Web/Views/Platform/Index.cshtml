@@ -34,7 +34,7 @@
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
                 <td>
-                    <div class="link">
+                    <div class="cp-link">
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id },
                         new { onclick = "return confirm('Are you sure you want to delete this entry?');" })
@@ -44,12 +44,3 @@
         }
     </tbody>
 </table>
-
-<style type="text/css">
-    .link {
-        width: 85px;
-    }
-    .link a {
-        font-size: 0.81rem;
-    }
-</style>
