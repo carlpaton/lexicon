@@ -1,0 +1,80 @@
+﻿@model Web.Models.EntryPlatformViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Entry Platform</h1>
+
+<p>
+    <a asp-controller="Entry" asp-action="Index">Back to List</a>
+</p>
+
+@if (TempData["message"] != null)
+{
+    <div class="text-info">
+        @TempData["message"]
+    </div>
+}
+
+<h2>Entry</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Entry.LexiconFunction" class="control-label"></label>
+            <textarea asp-for="Entry.LexiconFunction" class="form-control" readonly></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Entry.Recommendation" class="control-label"></label>
+            <textarea asp-for="Entry.Recommendation" class="form-control" readonly></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Entry.Notes" class="control-label"></label>
+            <textarea asp-for="Entry.Notes" class="form-control" readonly></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Entry.CategoryId" class="control-label"></label>
+            @Html.DropDownListFor(m => m.Entry.CategoryId, (List<SelectListItem>)ViewData["Category_SelectList"], "n/a", new { @class = "form-control", @disabled = "@disabled" })
+        </div>
+        <div class="form-group">
+            <label asp-for="Entry.SubCategoryId" class="control-label"></label>
+            @Html.DropDownListFor(m => m.Entry.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], "na/", new { @class = "form-control", @disabled = "@disabled" })
+        </div>
+    </div>
+</div>
+
+<h2>Entry Platform</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(m => m.EntryPlatformList.FirstOrDefault().PlatformId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(m => m.EntryPlatformList.FirstOrDefault().Description)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EntryPlatformList)
+        {
+        <tr>
+            <td>
+                @Html.DropDownListFor(modelItem => item.PlatformId, (List<SelectListItem>)ViewData["Platform_SelectList"], "n/a", new { @class = "form-control", @disabled = "disabled" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <div class="cp-link">
+links
+                </div>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

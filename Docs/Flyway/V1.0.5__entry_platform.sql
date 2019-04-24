@@ -8,3 +8,12 @@ CREATE TABLE [dbo].[entry_platform](
 	[description] [varchar](50) NULL
 ) ON [PRIMARY]
 GO
+
+
+INSERT INTO [dbo].[entry_platform]
+(entry_id, platform_id, description)
+VALUES
+(1,2,'Browse categories'),
+(1,3,'Browse categories'),
+(1,4,'View category directory')
+GO

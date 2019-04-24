@@ -12,19 +12,13 @@ namespace Web.Models
         [Display(Name = "Sub Category")]
         public int? SubCategoryId { get; set; }
 
+        [Required]
         [Display(Name = "Function")]
         public string LexiconFunction { get; set; }
 
+        [Required]
         public string Recommendation { get; set; }
 
         public string Notes { get; set; }
-    }
-
-    public class EntryPlatformViewModel : BaseModel
-    {
-        public int EntryId { get; set; }
-
-        [Display(Name = "Platform")]
-        public int PlatformId { get; set; }
     }
 }

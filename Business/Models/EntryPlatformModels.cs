@@ -43,9 +43,4 @@
             return false;
         }
     }
-
-    public class PlatformBusinessModel : BaseModel<PlatformBusinessModel>
-    {
-        
-    }
 }

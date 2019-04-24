@@ -61,10 +61,7 @@ namespace Business
         {
             var bu = _entryBusiness.GetModel(mapper);
             var selectList = new List<SelectListItem>();
-
-            // TODO ~ need to build this list from `bu.EntryPlatform.` -> `PlatformModel`
-
-            foreach (var item in bu.EntryPlatform)
+            foreach (var item in bu.Platform)
             {
                 selectList.Add(new SelectListItem()
                 {

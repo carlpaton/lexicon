@@ -12,11 +12,11 @@ namespace Web.Controllers
 {
     public class EntryController : Controller
     {
-        private readonly IEntryRepository _entryRepository;
         private readonly IMapper _mapper;
+        private readonly IEntryRepository _entryRepository;
         private readonly IViewDataSelectList _viewDataSelectList;
 
-        public EntryController(IMapper mapper, IEntryRepository entryRepository, IViewDataSelectList viewDataSelectList)
+        public EntryController(IMapper mapper, IViewDataSelectList viewDataSelectList, IEntryRepository entryRepository)
         {
             _mapper = mapper;
             _entryRepository = entryRepository;
@@ -125,7 +125,6 @@ namespace Web.Controllers
         {
             ViewData["Category_SelectList"] = _viewDataSelectList.CategorySelectList(_mapper);
             ViewData["SubCategory_SelectList"] = _viewDataSelectList.SubCategorySelectList(_mapper);
-            ViewData["Platform_SelectList"] = _viewDataSelectList.PlatformSelectList(_mapper);
         }
     }
 }

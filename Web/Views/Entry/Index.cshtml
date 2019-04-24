@@ -55,11 +55,12 @@
                 @Html.DropDownListFor(modelItem => item.CategoryId, (List<SelectListItem>)ViewData["Category_SelectList"], new { @class = "form-control", @disabled = "disabled" })
             </td>
             <td>
-                @Html.DropDownListFor(modelItem => item.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], new { @class = "form-control", @disabled = "disabled" })
+                @Html.DropDownListFor(modelItem => item.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], "n/a", new { @class = "form-control", @disabled = "disabled" })
             </td>
             <td>
                 <div class="cp-link">
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    @Html.ActionLink("Platform", "Index", "EntryPlatform", new { id = item.Id }, null) |
                     @Html.ActionLink("Delete", "Delete", new { id = item.Id },
                     new { onclick = "return confirm('Are you sure you want to delete this entry?');" })
                 </div>

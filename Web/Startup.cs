@@ -42,7 +42,8 @@ namespace Web
             var connectionString = Configuration.GetConnectionString("ConnMsSQL");
             var lexiconEntryBusiness = new EntryBusiness(
                     new CategoryRepository(connectionString),                      
-                    new SubCategoryRepository(connectionString));
+                    new SubCategoryRepository(connectionString),
+                    new PlatformRepository(connectionString));
 
             // Repository
             services.AddSingleton<ICategoryRepository>(new CategoryRepository(connectionString));

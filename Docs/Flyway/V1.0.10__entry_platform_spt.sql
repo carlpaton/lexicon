@@ -66,3 +66,13 @@ CREATE PROCEDURE sp_delete_entry_platform(@id INT)
         WHERE id=@id;
     END
 GO
+
+
+DROP PROCEDURE IF EXISTS dbo.sp_selectlist_entry_platform_by_entry_id
+GO
+CREATE PROCEDURE sp_selectlist_entry_platform_by_entry_id @Id int
+    AS
+    BEGIN
+        SELECT * FROM entry_platform WHERE entry_id = @Id
+    END
+GO

@@ -7,10 +7,9 @@ CREATE TABLE [dbo].[sub_category](
 ) ON [PRIMARY]
 GO
 
-/*
+
 INSERT INTO [dbo].[sub_category]
 (description)
 VALUES
-('LDP')
+('Jobs')
 GO
-*/

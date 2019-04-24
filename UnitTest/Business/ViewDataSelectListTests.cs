@@ -29,8 +29,8 @@ namespace UnitTest.Business
         public void TestInitialize()  
         {  
             buCategory = new List<CategoryBusinessModel>() { new CategoryBusinessModel() { Description = "Property", Id = 1 }};
-            buPlatform = new List<PlatformBusinessModel>() { new PlatformBusinessModel() { Description = "FrEnd", Id = 1 }};
             buSubCategory = new List<SubCategoryBusinessModel>() { new SubCategoryBusinessModel() { Description = "LDP", Id = 1 }};
+            buPlatform = new List<PlatformBusinessModel>() { new PlatformBusinessModel() { Description = "iOS", Id = 1 }};
 
             mockCategoryRepository = new Mock<ICategoryRepository>();
             mockPlatformRepository = new Mock<IPlatformRepository>();
@@ -51,7 +51,8 @@ namespace UnitTest.Business
 
             mockEntryBusiness = new EntryBusiness(
                 mockCategoryRepository.Object, 
-                mockSubCategoryRepository.Object);
+                mockSubCategoryRepository.Object,
+                mockPlatformRepository.Object);
         } 
 
         [TestMethod]
@@ -93,23 +94,23 @@ namespace UnitTest.Business
             Assert.AreEqual(expected[0].Value, actual[0].Value);
         }
 
-        //[TestMethod]
-        //public void PlatformSelectList_ShouldCreateList()
-        //{
-        //    // Arrange
-        //    var expected = new List<SelectListItem>
-        //    {
-        //        new SelectListItem() { Text = "FrEnd", Value = "1" }
-        //    };
+        [TestMethod]
+        public void PlatformSelectList_ShouldCreateList()
+        {
+            // Arrange
+            var expected = new List<SelectListItem>
+            {
+                new SelectListItem() { Text = "iOS", Value = "1" }
+            };
 
-        //    var classUnderTest = new ViewDataSelectList(mockEntryBusiness);
+            var classUnderTest = new ViewDataSelectList(mockEntryBusiness);
 
-        //    // Act
-        //    var actual = classUnderTest.PlatformSelectList(mockMapper.Object);
+            // Act
+            var actual = classUnderTest.PlatformSelectList(mockMapper.Object);
 
-        //    // Assert
-        //    Assert.AreEqual(expected[0].Text, actual[0].Text);
-        //    Assert.AreEqual(expected[0].Value, actual[0].Value);
-        //}
+            // Assert
+            Assert.AreEqual(expected[0].Text, actual[0].Text);
+            Assert.AreEqual(expected[0].Value, actual[0].Value);
+        }
     }
 }

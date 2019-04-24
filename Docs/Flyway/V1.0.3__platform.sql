@@ -7,15 +7,15 @@ CREATE TABLE [dbo].[platform](
 ) ON [PRIMARY]
 GO
 
-/*
+
 INSERT INTO [dbo].[platform]
 (description)
 VALUES
 ('FrEnd'),
-('Classic'),
-('iOS YAP'),
-('iOS Green App'),
-('Andriod YAP'),
-('Andriod Green App')
+('iOS'),
+('Android'),
+('Desktop'),
+('iOS orange app'),
+('iOS green app'),
+('Apple watch')
 GO
-*/

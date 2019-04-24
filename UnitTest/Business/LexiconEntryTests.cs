@@ -18,7 +18,7 @@ namespace UnitTest.Business
 
         List<CategoryBusinessModel> buCategory;
         List<SubCategoryBusinessModel> buSubCategory;
-        List<EntryBusinessModel> buPlatform;
+        List<PlatformBusinessModel> buPlatform;
 
         Mock<ICategoryRepository> mockCategoryRepository;
         Mock<ISubCategoryRepository> mockSubCategoryRepository;
@@ -35,7 +35,7 @@ namespace UnitTest.Business
 
             buCategory = new List<CategoryBusinessModel>() { new CategoryBusinessModel() { Description = "Property", Id = 1 }};
             buSubCategory = new List<SubCategoryBusinessModel>() { new SubCategoryBusinessModel() { Description = "LDP", Id = 1 }};
-            //buPlatform = new List<EntryBusinessModel>() { new EntryBusinessModel() { Description = "FrEnd", Id = 1 }};
+            buPlatform = new List<PlatformBusinessModel>() { new PlatformBusinessModel() { Description = "iOS", Id = 1 }};
             
             mockCategoryRepository = new Mock<ICategoryRepository>();
             mockPlatformRepository = new Mock<IPlatformRepository>();
@@ -62,13 +62,9 @@ namespace UnitTest.Business
                 .Setup(x => x.Map<List<SubCategoryBusinessModel>>(It.IsAny<List<SubCategoryModel>>()))
                 .Returns(buSubCategory);
 
-            //mockMapper
-            //    .Setup(x => x.Map<List<PlatformBusinessModel>>(It.IsAny<List<PlatformModel>>()))
-            //    .Returns(buPlatform);
-
-            //mockMapper
-            //    .Setup(x => x.Map<List<LexiconEntryTypeBusinessModel>>(It.IsAny<List<LexiconEntryTypeModel>>()))
-            //    .Returns(buLexiconEntryType);
+            mockMapper
+                .Setup(x => x.Map<List<PlatformBusinessModel>>(It.IsAny<List<PlatformModel>>()))
+                .Returns(buPlatform);
         } 
 
         [TestCleanup]  
@@ -89,7 +85,8 @@ namespace UnitTest.Business
 
             var classUnderTest = new EntryBusiness(
                 mockCategoryRepository.Object, 
-                mockSubCategoryRepository.Object);
+                mockSubCategoryRepository.Object,
+                mockPlatformRepository.Object);
 
             // Act
             var actual = classUnderTest.GetModel(mockMapper.Object);

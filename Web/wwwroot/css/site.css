@@ -62,6 +62,7 @@ body {
 
 .cp-link {
     width: 85px;
+    white-space: nowrap;
 }
 
 .cp-link a {

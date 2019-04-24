@@ -5,21 +5,21 @@ namespace Business.Models
 {
     public class EntryBusinessModel
     {
-        public int Id { get; set; }
-        public int CategoryId { get; set; }
-        public int SubCategoryId { get; set; }
-        public string LexiconFunction { get; set; }
-        public string Recommendation { get; set; }
-        public string Notes { get; set; }
+        //public int Id { get; set; }
+        //public int CategoryId { get; set; }
+        //public int SubCategoryId { get; set; }
+        //public string LexiconFunction { get; set; }
+        //public string Recommendation { get; set; }
+        //public string Notes { get; set; }
         public List<CategoryBusinessModel> Category { get; set; }
         public List<SubCategoryBusinessModel> SubCategory { get; set; }
-        public List<EntryPlatformBusinessModel> EntryPlatform { get; set; }
+        public List<PlatformBusinessModel> Platform { get; set; }
 
         public EntryBusinessModel()
         {
             Category = new List<CategoryBusinessModel>();
             SubCategory = new List<SubCategoryBusinessModel>();
-            EntryPlatform = new List<EntryPlatformBusinessModel>();
+            Platform = new List<PlatformBusinessModel>();
         }
 
         //grantwinney.com/how-to-compare-two-objects-testing-for-equality-in-c/
@@ -29,7 +29,7 @@ namespace Business.Models
         {
             return Category.GetHashCode()
                 ^ SubCategory.GetHashCode()
-                ^ EntryPlatform.GetHashCode();
+                ^ Platform.GetHashCode();
         }
 
         public override bool Equals(object other)
@@ -44,7 +44,7 @@ namespace Business.Models
 
                 return !Category.Except(that.Category).ToList().Any()
                     && !SubCategory.Except(that.SubCategory).ToList().Any()
-                    && !EntryPlatform.Except(that.EntryPlatform).ToList().Any();
+                    && !Platform.Except(that.Platform).ToList().Any();
             }
 
             return false;
