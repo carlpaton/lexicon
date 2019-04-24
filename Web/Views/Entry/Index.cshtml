@@ -59,10 +59,11 @@
             </td>
             <td>
                 <div class="cp-link">
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    @Html.ActionLink("Platform", "Index", "EntryPlatform", new { id = item.Id }, null) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id },
-                    new { onclick = "return confirm('Are you sure you want to delete this entry?');" })
+                    <form asp-action="Delete" asp-route-id="@item.Id">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Index" asp-route-id="@item.Id" asp-controller="EntryPlatform">Platform</a> |
+                        <input type="submit" value="Delete" class="btn-link" onclick="return confirm('Are you sure you want to delete this entry?');" />
+                    </form>
                 </div>
             </td>
         </tr>

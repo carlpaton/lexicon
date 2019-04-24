@@ -98,7 +98,6 @@ namespace Web.Controllers
                 catch (Exception ex)
                 {
                     // TODO ~ log something?
-
                     return NotFound();
                 }
             }
@@ -107,17 +106,14 @@ namespace Web.Controllers
             return View(vwModel);
         }
 
-        // TODO ~ we want to safe guard this and rather return `405` if some clown does a GET here
-        // Currently `Index.html` has a link to this method in the `delete`, this is shit :D
-        
         // POST: LexiconEntry/Delete/5
-        //[HttpPost, ActionName("Delete")] 
-        //[ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Delete")] 
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             _entryRepository.Delete(id);
-            
-            TempData["message"] = "Lexicon entry deleted successfully.";
+            TempData["message"] = "Entry deleted successfully.";
+
             return RedirectToAction("Index");
         }
 

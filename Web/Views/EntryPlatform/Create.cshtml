@@ -1,0 +1,47 @@
+﻿@model Web.Models.EntryPlatformListViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Entry Platform</h4>
+<hr />
+<div class="text-info">@ViewData["message"]</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input type="hidden" asp-for="EntryId" />
+
+            <div class="form-group">
+                <label asp-for="PlatformId" class="control-label"></label>
+                @Html.DropDownListFor(m => m.PlatformId, (List<SelectListItem>)ViewData["Platform_SelectList"], "-- Please Select --", new { @class = "form-control" })
+                <span asp-validation-for="PlatformId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    @{
+        var parms = new Dictionary<string, string>
+    {
+        { "id", Model.EntryId.ToString() }
+    };
+    }
+    <a asp-controller="EntryPlatform" asp-action="Index" asp-all-route-data="parms">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -82,3 +82,11 @@ body {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.btn-link {
+    border: 0;
+    padding: 0;
+    color: #007bff;
+    font-size: 0.81rem;
+    cursor: pointer;
+}

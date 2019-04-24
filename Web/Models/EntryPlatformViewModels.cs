@@ -8,16 +8,15 @@ namespace Web.Models
         public EntryPlatformViewModel()
         {
             Entry = new EntryViewModel();
-            EntryPlatformList = new List<EntryPlatform>();
+            EntryPlatformList = new List<EntryPlatformListViewModel>();
         }
-        public int Id { get; set; }
 
         public EntryViewModel Entry { get; set; }
         
-        public List<EntryPlatform> EntryPlatformList { get; set; }
+        public List<EntryPlatformListViewModel> EntryPlatformList { get; set; }
     } 
 
-    public class EntryPlatform : BaseModel
+    public class EntryPlatformListViewModel : BaseModel
     { 
         public int EntryId { get; set; }
 

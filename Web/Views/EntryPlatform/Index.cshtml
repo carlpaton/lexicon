@@ -5,7 +5,6 @@
 }
 
 <h1>Entry Platform</h1>
-
 <p>
     <a asp-controller="Entry" asp-action="Index">Back to List</a>
 </p>
@@ -40,12 +39,21 @@
         </div>
         <div class="form-group">
             <label asp-for="Entry.SubCategoryId" class="control-label"></label>
-            @Html.DropDownListFor(m => m.Entry.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], "na/", new { @class = "form-control", @disabled = "@disabled" })
+            @Html.DropDownListFor(m => m.Entry.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], "n/a", new { @class = "form-control", @disabled = "@disabled" })
         </div>
     </div>
 </div>
 
 <h2>Entry Platform</h2>
+<p>
+    @{
+        var createParms = new Dictionary<string, string>
+        {
+            { "id", Model.Entry.Id.ToString() }
+        };
+    }
+    <a asp-controller="EntryPlatform" asp-action="Create" asp-all-route-data="createParms">Create New</a>
+</p>
 
 <table class="table">
     <thead>
@@ -71,7 +79,17 @@
             </td>
             <td>
                 <div class="cp-link">
-links
+                    @{
+                        var parms = new Dictionary<string, string>
+                        {
+                            { "id", item.Id.ToString() },
+                            { "entryId", item.EntryId.ToString() }
+                        };
+                    }
+                    <form asp-action="Delete" asp-all-route-data="parms">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <input type="submit" value="Delete" class="btn-link" onclick="return confirm('Are you sure you want to delete this entry?');" />
+                    </form>
                 </div>
             </td>
         </tr>
