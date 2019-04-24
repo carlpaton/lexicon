@@ -10,19 +10,21 @@ using System;
 namespace UnitTest.Api.Controllers
 {
     [TestClass]
-    public class LexiconEntryTypeControllerTests
+    public class EntryPlatformControllerTests
     {
         [TestMethod, Description("Get with no parameters returns a list of all: SelectList")]
         public void Get_WithNoParameters_ShouldReturnList()
         {
             // Arrange
-            var mockRepository = new Mock<ILexiconEntryTypeRepository>();
-            var expectedValue = new List<LexiconEntryTypeModel>()
+            var mockRepository = new Mock<IEntryPlatformRepository>();
+            var expectedValue = new List<EntryPlatformModel>()
             {
-                new LexiconEntryTypeModel()
+                new EntryPlatformModel()
                 {
-                    Id = 8462,
-                    Description = "aut"
+                    Id = 8413,
+                    EntryId = 8414,
+                    PlatformId = 8415,
+                    Description = "blanditiis"
                 }
             };
 
@@ -30,11 +32,11 @@ namespace UnitTest.Api.Controllers
                 .Setup(m => m.SelectList())
                 .Returns(expectedValue);
 
-            var controller = new LexiconEntryTypeController(mockRepository.Object);
+            var controller = new EntryPlatformController(mockRepository.Object);
 
             // Act
             var result = controller.Get();
-            var actualValue = (List<LexiconEntryTypeModel>)result.Value;
+            var actualValue = (List<EntryPlatformModel>)result.Value;
 
             // Assert
             CollectionAssert.AreEqual(expectedValue, actualValue);
@@ -44,23 +46,25 @@ namespace UnitTest.Api.Controllers
         public void Get_WithParameter42_ShouldReturnDbModel()
         {
             // Arrange
-            var actualId = 2474;
-            var mockRepository = new Mock<ILexiconEntryTypeRepository>();
-            var expectedValue = new LexiconEntryTypeModel()
+            var actualId = 8412;
+            var mockRepository = new Mock<IEntryPlatformRepository>();
+            var expectedValue = new EntryPlatformModel()
             {
                 Id = actualId,
-                Description = "magnam"
+                EntryId = 8414,
+                PlatformId = 8415,
+                Description = "blanditiis"
             };
 
             mockRepository
                 .Setup(m => m.Select(actualId))
                 .Returns(expectedValue);
 
-            var controller = new LexiconEntryTypeController(mockRepository.Object);
+            var controller = new EntryPlatformController(mockRepository.Object);
 
             // Act
             var result = controller.Get(actualId) as JsonResult;
-            var actualValue = (LexiconEntryTypeModel)result.Value;
+            var actualValue = (EntryPlatformModel)result.Value;
 
             // Assert
             Assert.AreEqual(expectedValue, actualValue);
@@ -70,15 +74,15 @@ namespace UnitTest.Api.Controllers
         public void Post_WithMockedModel_ShouldReturnNewId()
         {
             // Arrange
-            var mockRepository = new Mock<ILexiconEntryTypeRepository>();
-            var dbModel = new LexiconEntryTypeModel();
-            var expectedValue = 2474;
+            var mockRepository = new Mock<IEntryPlatformRepository>();
+            var dbModel = new EntryPlatformModel();
+            var expectedValue = 8412;
 
             mockRepository
                 .Setup(m => m.Insert(dbModel))
                 .Returns(expectedValue);
 
-            var controller = new LexiconEntryTypeController(mockRepository.Object);
+            var controller = new EntryPlatformController(mockRepository.Object);
 
             // Act
             var result = controller.Post(dbModel) as JsonResult;
@@ -92,18 +96,20 @@ namespace UnitTest.Api.Controllers
         public void Put_WithMockedModel_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 2474;
+            var actualId = 8412;
             var dummyString = Guid.NewGuid().ToString().Replace("-", "");
-            var mockRepository = new Mock<ILexiconEntryTypeRepository>();
-            var dbModel = new LexiconEntryTypeModel()
+            var mockRepository = new Mock<IEntryPlatformRepository>();
+            var dbModel = new EntryPlatformModel()
             {
+                EntryId = 8413,
+                PlatformId = 8414,
                 Description = dummyString,
             };
 
             mockRepository
                 .Setup(m => m.Update(dbModel));
 
-            var controller = new LexiconEntryTypeController(mockRepository.Object);
+            var controller = new EntryPlatformController(mockRepository.Object);
 
             // Act
             controller.Put(actualId, dbModel);
@@ -111,7 +117,7 @@ namespace UnitTest.Api.Controllers
             // Assert
             mockRepository
                 .Verify(m => m.Update(
-                        It.Is<LexiconEntryTypeModel>(
+                        It.Is<EntryPlatformModel>(
                             i => i.Id == actualId && i.Description == dummyString)), 
                     Times.Once());
         }
@@ -120,13 +126,13 @@ namespace UnitTest.Api.Controllers
         public void Delete_WithParameter42_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 2474;
-            var mockRepository = new Mock<ILexiconEntryTypeRepository>();
+            var actualId = 8412;
+            var mockRepository = new Mock<IEntryPlatformRepository>();
 
             mockRepository
                 .Setup(m => m.Delete(actualId));
 
-            var controller = new LexiconEntryTypeController(mockRepository.Object);
+            var controller = new EntryPlatformController(mockRepository.Object);
 
             // Act
             controller.Delete(actualId);

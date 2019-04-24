@@ -16,7 +16,7 @@ namespace IntegrationTest
             // Arrange
             var dbModel = new PlatformModel()
             {
-                Description = "voluptatum",
+                Description = "ex",
             };
             var expectedValue = new PlatformRepository(AppState.ConnectionString)
                 .Insert(dbModel);
@@ -65,7 +65,7 @@ namespace IntegrationTest
             var expectedValue = 0;
             var dbModel = new PlatformModel()
             {
-                Description = "voluptatum",
+                Description = "ex",
             };
 
             // Act

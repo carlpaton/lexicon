@@ -5,40 +5,36 @@ using System.Collections.Generic;
 
 namespace Business
 {
-    public interface ILexiconEntryBusiness
+    public interface IEntryBusiness
     {
-        LexiconEntryBusinessModel GetModel(IMapper _mapper);
+        EntryBusinessModel GetModel(IMapper _mapper);
     }
 
-    public class LexiconEntryBusiness : ILexiconEntryBusiness
+    public class EntryBusiness : IEntryBusiness
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IPlatformRepository _platformRepository;
         private readonly ISubCategoryRepository _subCategoryRepository;
-        private readonly ILexiconEntryTypeRepository _lexiconEntryTypeRepository;
 
-        public LexiconEntryBusiness(ICategoryRepository categoryRepository, IPlatformRepository platformRepository, ISubCategoryRepository subCategoryRepository, ILexiconEntryTypeRepository lexiconEntryTypeRepository)
+        public EntryBusiness(ICategoryRepository categoryRepository, ISubCategoryRepository subCategoryRepository)
         {
             _categoryRepository = categoryRepository;
-            _platformRepository = platformRepository;
             _subCategoryRepository = subCategoryRepository;
-            _lexiconEntryTypeRepository = lexiconEntryTypeRepository;
         }
 
-        public LexiconEntryBusinessModel GetModel(IMapper _mapper)
+        public EntryBusinessModel GetModel(IMapper _mapper)
         {
             var category = _categoryRepository.SelectList();
-            var platform = _platformRepository.SelectList();
             var subCategory = _subCategoryRepository.SelectList();
-            var lexiconEntry = _lexiconEntryTypeRepository.SelectList();
 
-            var lexiconEntryBusiness = new LexiconEntryBusinessModel();
-            lexiconEntryBusiness.Category.AddRange(_mapper.Map<List<CategoryBusinessModel>>(category));
-            lexiconEntryBusiness.Platform.AddRange(_mapper.Map<List<PlatformBusinessModel>>(platform));
-            lexiconEntryBusiness.SubCategory.AddRange(_mapper.Map<List<SubCategoryBusinessModel>>(subCategory));
-            lexiconEntryBusiness.LexiconEntryType.AddRange(_mapper.Map<List<LexiconEntryTypeBusinessModel>>(lexiconEntry));
+            var entryBusiness = new EntryBusinessModel();
+            entryBusiness.Category.AddRange(_mapper.Map<List<CategoryBusinessModel>>(category));
+            entryBusiness.SubCategory.AddRange(_mapper.Map<List<SubCategoryBusinessModel>>(subCategory));
 
-            return lexiconEntryBusiness;
+            // TODO 
+            // map 
+            // map `EntryPlatform.PlatformModel`
+
+            return entryBusiness;
         }
     }
 }

@@ -24,8 +24,8 @@ namespace Api
 
             // DI
             services.AddSingleton<ICategoryRepository>(new CategoryRepository(AppState.ConnectionString));
-            services.AddSingleton<ILexiconEntryRepository>(new LexiconEntryRepository(AppState.ConnectionString));
-            services.AddSingleton<ILexiconEntryTypeRepository>(new LexiconEntryTypeRepository(AppState.ConnectionString));
+            services.AddSingleton<IEntryRepository>(new EntryRepository(AppState.ConnectionString));
+            services.AddSingleton<IEntryPlatformRepository>(new EntryPlatformRepository(AppState.ConnectionString));
             services.AddSingleton<IPlatformRepository>(new PlatformRepository(AppState.ConnectionString));
             services.AddSingleton<ISubCategoryRepository>(new SubCategoryRepository(AppState.ConnectionString));
         }
@@ -34,13 +34,9 @@ namespace Api
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
-            {
                 app.UseDeveloperExceptionPage();
-            }
             else
-            {
                 app.UseHsts();
-            }
 
             app.UseHttpsRedirection();
             app.UseMvc();

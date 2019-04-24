@@ -88,7 +88,7 @@ if ($Debug) {
 	docker ps --all
 	Write-Host "* List volume data" -f magenta
 	docker run -it --rm -v docker-compose_lexicon-flyway:/vol busybox ls -l /vol
-	docker run -it --rm -v docker-compose_lexicon-flyway:/vol busybox cat /vol/V1.0.5__lexicon_entry.sql
+	docker run -it --rm -v docker-compose_lexicon-flyway:/vol busybox cat /vol/V1.0.4__entry.sql
 	docker logs lexicon-migrate
 } 
 

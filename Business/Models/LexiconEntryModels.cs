@@ -1,22 +1,25 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Business.Models
 {
-    public class LexiconEntryBusinessModel
+    public class EntryBusinessModel
     {
+        public int Id { get; set; }
+        public int CategoryId { get; set; }
+        public int SubCategoryId { get; set; }
+        public string LexiconFunction { get; set; }
+        public string Recommendation { get; set; }
+        public string Notes { get; set; }
         public List<CategoryBusinessModel> Category { get; set; }
-        public List<PlatformBusinessModel> Platform { get; set; }
         public List<SubCategoryBusinessModel> SubCategory { get; set; }
-        public List<LexiconEntryTypeBusinessModel> LexiconEntryType { get; set; }
+        public List<EntryPlatformBusinessModel> EntryPlatform { get; set; }
 
-        public LexiconEntryBusinessModel()
+        public EntryBusinessModel()
         {
             Category = new List<CategoryBusinessModel>();
-            Platform = new List<PlatformBusinessModel>();
             SubCategory = new List<SubCategoryBusinessModel>();
-            LexiconEntryType = new List<LexiconEntryTypeBusinessModel>();
+            EntryPlatform = new List<EntryPlatformBusinessModel>();
         }
 
         //grantwinney.com/how-to-compare-two-objects-testing-for-equality-in-c/
@@ -25,25 +28,23 @@ namespace Business.Models
         public override int GetHashCode()
         {
             return Category.GetHashCode()
-                ^ Platform.GetHashCode()
                 ^ SubCategory.GetHashCode()
-                ^ LexiconEntryType.GetHashCode();
+                ^ EntryPlatform.GetHashCode();
         }
 
         public override bool Equals(object other)
         {
-            if (other is LexiconEntryBusinessModel)
+            if (other is EntryBusinessModel)
             {
-                var that = other as LexiconEntryBusinessModel;
+                var that = other as EntryBusinessModel;
 
                 // TODO
                 // what happens if the `that` has a higher count of items?
                 // look at also comparing the count / if the one has more than the other first
 
                 return !Category.Except(that.Category).ToList().Any()
-                    && !Platform.Except(that.Platform).ToList().Any()
                     && !SubCategory.Except(that.SubCategory).ToList().Any()
-                    && !LexiconEntryType.Except(that.LexiconEntryType).ToList().Any();
+                    && !EntryPlatform.Except(that.EntryPlatform).ToList().Any();
             }
 
             return false;

@@ -7,19 +7,18 @@ namespace Business
     public interface IViewDataSelectList
     {
         List<SelectListItem> CategorySelectList(IMapper mapper);
-        List<SelectListItem> PlatformSelectList(IMapper mapper);
         List<SelectListItem> SubCategorySelectList(IMapper mapper);
-        List<SelectListItem> LexiconEntryTypeSelectList(IMapper mapper);
+        List<SelectListItem> PlatformSelectList(IMapper mapper);
     }
 
     public class ViewDataSelectList : IViewDataSelectList
     {
-        private readonly ILexiconEntryBusiness _lexiconEntryBusiness;
-        public delegate void HoeDelegate();
+        private readonly IEntryBusiness _entryBusiness;
+        // public delegate void HoeDelegate();
 
-        public ViewDataSelectList (ILexiconEntryBusiness lexiconEntryBusiness)
+        public ViewDataSelectList (IEntryBusiness entryBusiness)
         {
-            _lexiconEntryBusiness = lexiconEntryBusiness;
+            _entryBusiness = entryBusiness;
         }
 
         /* TODO
@@ -30,24 +29,9 @@ namespace Business
 
         public List<SelectListItem> CategorySelectList(IMapper mapper)
         {
-            var lexiconEntryBusinessModel = _lexiconEntryBusiness.GetModel(mapper);
+            var bu = _entryBusiness.GetModel(mapper);
             var selectList = new List<SelectListItem>();
-            foreach (var item in lexiconEntryBusinessModel.Category)
-            {
-                selectList.Add(new SelectListItem()
-                {
-                    Text = item.Description,
-                    Value = item.Id.ToString()
-                });
-            }
-            return selectList;
-        }
-
-        public List<SelectListItem> PlatformSelectList(IMapper mapper)
-        {
-            var lexiconEntryBusinessModel = _lexiconEntryBusiness.GetModel(mapper);
-            var selectList = new List<SelectListItem>();
-            foreach (var item in lexiconEntryBusinessModel.Platform)
+            foreach (var item in bu.Category)
             {
                 selectList.Add(new SelectListItem()
                 {
@@ -60,9 +44,9 @@ namespace Business
 
         public List<SelectListItem> SubCategorySelectList(IMapper mapper)
         {
-            var lexiconEntryBusinessModel = _lexiconEntryBusiness.GetModel(mapper);
+            var bu = _entryBusiness.GetModel(mapper);
             var selectList = new List<SelectListItem>();
-            foreach (var item in lexiconEntryBusinessModel.SubCategory)
+            foreach (var item in bu.SubCategory)
             {
                 selectList.Add(new SelectListItem()
                 {
@@ -73,11 +57,14 @@ namespace Business
             return selectList;
         }
 
-        public List<SelectListItem> LexiconEntryTypeSelectList(IMapper mapper)
+        public List<SelectListItem> PlatformSelectList(IMapper mapper)
         {
-            var lexiconEntryBusinessModel = _lexiconEntryBusiness.GetModel(mapper);
+            var bu = _entryBusiness.GetModel(mapper);
             var selectList = new List<SelectListItem>();
-            foreach (var item in lexiconEntryBusinessModel.LexiconEntryType)
+
+            // TODO ~ need to build this list from `bu.EntryPlatform.` -> `PlatformModel`
+
+            foreach (var item in bu.EntryPlatform)
             {
                 selectList.Add(new SelectListItem()
                 {

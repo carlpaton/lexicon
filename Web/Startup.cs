@@ -40,24 +40,22 @@ namespace Web
                     options.UseSqlServer(Configuration.GetConnectionString("DummyContext")));
 
             var connectionString = Configuration.GetConnectionString("ConnMsSQL");
-            var lexiconEntryBusiness = new LexiconEntryBusiness(
-                    new CategoryRepository(connectionString), 
-                    new PlatformRepository(connectionString), 
-                    new SubCategoryRepository(connectionString), 
-                    new LexiconEntryTypeRepository(connectionString));
+            var lexiconEntryBusiness = new EntryBusiness(
+                    new CategoryRepository(connectionString),                      
+                    new SubCategoryRepository(connectionString));
 
             // Repository
             services.AddSingleton<ICategoryRepository>(new CategoryRepository(connectionString));
-            services.AddSingleton<ILexiconEntryRepository>(new LexiconEntryRepository(connectionString));
-            services.AddSingleton<ILexiconEntryTypeRepository>(new LexiconEntryTypeRepository(connectionString));
-            services.AddSingleton<IPlatformRepository>(new PlatformRepository(connectionString));
             services.AddSingleton<ISubCategoryRepository>(new SubCategoryRepository(connectionString));
+            services.AddSingleton<IPlatformRepository>(new PlatformRepository(connectionString));
+            services.AddSingleton<IEntryRepository>(new EntryRepository(connectionString));
+            services.AddSingleton<IEntryPlatformRepository>(new EntryPlatformRepository(connectionString));
             
             // Automagic \ :D /
             services.AddAutoMapper(x => x.AddProfile(new MappingEntity()));
 
             // Business
-            services.AddSingleton<ILexiconEntryBusiness>(lexiconEntryBusiness);
+            services.AddSingleton<IEntryBusiness>(lexiconEntryBusiness);
             services.AddSingleton<IViewDataSelectList>(new ViewDataSelectList(lexiconEntryBusiness));
         }
 
@@ -94,14 +92,14 @@ namespace Web
             CreateMap<CategoryModel, CategoryBusinessModel>();
             CreateMap<PlatformModel, PlatformBusinessModel>();
             CreateMap<SubCategoryModel, SubCategoryBusinessModel>();
-            CreateMap<LexiconEntryModel, LexiconEntryTypeBusinessModel>();
+            CreateMap<EntryModel, EntryBusinessModel>();
 
             // `Repository` to `View` models 
-            CreateMap<LexiconEntryModel, LexiconEntryViewModel>();
+            CreateMap<EntryModel, EntryViewModel>();
            
             // `View` to `Repository` models
             // TODO ~ I think this works both ways AND is not actually needed with primitive types
-            CreateMap<LexiconEntryViewModel, LexiconEntryModel>();
+            CreateMap<EntryViewModel, EntryModel>();
         }  
     } 
 }

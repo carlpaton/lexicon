@@ -10,24 +10,24 @@ using Web.Models;
 
 namespace Web.Controllers
 {
-    public class LexiconEntryController : Controller
+    public class EntryController : Controller
     {
-        private readonly ILexiconEntryRepository _lexiconEntryRepository;
+        private readonly IEntryRepository _entryRepository;
         private readonly IMapper _mapper;
         private readonly IViewDataSelectList _viewDataSelectList;
 
-        public LexiconEntryController(ILexiconEntryRepository lexiconEntryRepository, IMapper mapper, IViewDataSelectList viewDataSelectList)
+        public EntryController(IMapper mapper, IEntryRepository entryRepository, IViewDataSelectList viewDataSelectList)
         {
-            _lexiconEntryRepository = lexiconEntryRepository;
             _mapper = mapper;
+            _entryRepository = entryRepository;
             _viewDataSelectList = viewDataSelectList;
         }
 
         // GET: LexiconEntry
         public IActionResult Index()
         {
-            var dbModel = _lexiconEntryRepository.SelectList();
-            var vwModel = _mapper.Map<List<LexiconEntryViewModel>>(dbModel);
+            var dbModel = _entryRepository.SelectList();
+            var vwModel = _mapper.Map<List<EntryViewModel>>(dbModel);
 
             SetSelectList();
             return View(vwModel);
@@ -43,22 +43,22 @@ namespace Web.Controllers
         // POST: LexiconEntry/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("CategoryId,PlatformId,SubCategoryId,LexiconEntryTypeId,Description")] LexiconEntryViewModel vwModel)
+        public IActionResult Create([Bind("CategoryId,SubCategoryId,LexiconFunction,Recommendation,Notes")] EntryViewModel vwModel)
         {
             if (ModelState.IsValid)
             {
-                var dbModel = _mapper.Map<LexiconEntryModel>(vwModel);
-                _lexiconEntryRepository.Insert(dbModel);
+                var dbModel = _mapper.Map<EntryModel>(vwModel);
+                _entryRepository.Insert(dbModel);
 
-                ViewData["message"] = "Lexicon entry added successfully.";
+                ViewData["message"] = "Entry added successfully.";
                 ModelState.SetModelValue("CategoryId", new ValueProviderResult(""));
-                ModelState.SetModelValue("PlatformId", new ValueProviderResult(""));
                 ModelState.SetModelValue("SubCategoryId", new ValueProviderResult(""));
-                ModelState.SetModelValue("LexiconEntryTypeId", new ValueProviderResult(""));
-                ModelState.SetModelValue("Description", new ValueProviderResult(""));
+                ModelState.SetModelValue("LexiconFunction", new ValueProviderResult(""));
+                ModelState.SetModelValue("Recommendation", new ValueProviderResult(""));
+                ModelState.SetModelValue("Notes", new ValueProviderResult(""));
 
                 SetSelectList();
-                return View(new LexiconEntryViewModel());
+                return View(new EntryViewModel());
             }
             return View(vwModel);
         }
@@ -69,11 +69,11 @@ namespace Web.Controllers
             if (id == null)
               return NotFound();
 
-            var dbModel = _lexiconEntryRepository.Select(id ?? 0);
+            var dbModel = _entryRepository.Select(id ?? 0);
             if (dbModel.Id == 0)
                 return NotFound();
 
-            var vwModel = _mapper.Map<LexiconEntryViewModel>(dbModel);
+            var vwModel = _mapper.Map<EntryViewModel>(dbModel);
             SetSelectList();
             return View(vwModel);
         }
@@ -81,7 +81,7 @@ namespace Web.Controllers
         // POST: LexiconEntry/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,CategoryId,PlatformId,SubCategoryId,LexiconEntryTypeId,Description")] LexiconEntryViewModel vwModel)
+        public IActionResult Edit(int id, [Bind("Id,CategoryId,SubCategoryId,LexiconFunction,Recommendation,Notes")] EntryViewModel vwModel)
         {
             if (id != vwModel.Id)
                 return NotFound();
@@ -90,10 +90,10 @@ namespace Web.Controllers
             {
                 try
                 {
-                    var dbModel = _mapper.Map<LexiconEntryModel>(vwModel);
-                    _lexiconEntryRepository.Update(dbModel);
+                    var dbModel = _mapper.Map<EntryModel>(vwModel);
+                    _entryRepository.Update(dbModel);
 
-                    ViewData["message"] = "Lexicon entry updated successfully.";
+                    ViewData["message"] = "Entry updated successfully.";
                 }
                 catch (Exception ex)
                 {
@@ -115,7 +115,7 @@ namespace Web.Controllers
         //[ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
-            _lexiconEntryRepository.Delete(id);
+            _entryRepository.Delete(id);
             
             TempData["message"] = "Lexicon entry deleted successfully.";
             return RedirectToAction("Index");
@@ -124,9 +124,8 @@ namespace Web.Controllers
         public void SetSelectList()
         {
             ViewData["Category_SelectList"] = _viewDataSelectList.CategorySelectList(_mapper);
-            ViewData["Platform_SelectList"] = _viewDataSelectList.PlatformSelectList(_mapper);
             ViewData["SubCategory_SelectList"] = _viewDataSelectList.SubCategorySelectList(_mapper);
-            ViewData["LexiconEntryType_SelectList"] = _viewDataSelectList.LexiconEntryTypeSelectList(_mapper);
+            ViewData["Platform_SelectList"] = _viewDataSelectList.PlatformSelectList(_mapper);
         }
     }
 }

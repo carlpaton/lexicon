@@ -21,8 +21,8 @@ namespace UnitTest.Api.Controllers
             {
                 new PlatformModel()
                 {
-                    Id = 8462,
-                    Description = "aut"
+                    Id = 4400,
+                    Description = "et"
                 }
             };
 
@@ -44,12 +44,12 @@ namespace UnitTest.Api.Controllers
         public void Get_WithParameter42_ShouldReturnDbModel()
         {
             // Arrange
-            var actualId = 8461;
+            var actualId = 4399;
             var mockRepository = new Mock<IPlatformRepository>();
             var expectedValue = new PlatformModel()
             {
                 Id = actualId,
-                Description = "aut"
+                Description = "et"
             };
 
             mockRepository
@@ -72,7 +72,7 @@ namespace UnitTest.Api.Controllers
             // Arrange
             var mockRepository = new Mock<IPlatformRepository>();
             var dbModel = new PlatformModel();
-            var expectedValue = 8461;
+            var expectedValue = 4399;
 
             mockRepository
                 .Setup(m => m.Insert(dbModel))
@@ -92,7 +92,7 @@ namespace UnitTest.Api.Controllers
         public void Put_WithMockedModel_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 8461;
+            var actualId = 4399;
             var dummyString = Guid.NewGuid().ToString().Replace("-", "");
             var mockRepository = new Mock<IPlatformRepository>();
             var dbModel = new PlatformModel()
@@ -120,7 +120,7 @@ namespace UnitTest.Api.Controllers
         public void Delete_WithParameter42_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 8461;
+            var actualId = 4399;
             var mockRepository = new Mock<IPlatformRepository>();
 
             mockRepository

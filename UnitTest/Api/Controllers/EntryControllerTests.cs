@@ -10,23 +10,23 @@ using System;
 namespace UnitTest.Api.Controllers
 {
     [TestClass]
-    public class LexiconEntryControllerTests
+    public class EntryControllerTests
     {
         [TestMethod, Description("Get with no parameters returns a list of all: SelectList")]
         public void Get_WithNoParameters_ShouldReturnList()
         {
             // Arrange
-            var mockRepository = new Mock<ILexiconEntryRepository>();
-            var expectedValue = new List<LexiconEntryModel>()
+            var mockRepository = new Mock<IEntryRepository>();
+            var expectedValue = new List<EntryModel>()
             {
-                new LexiconEntryModel()
+                new EntryModel()
                 {
-                    Id = 2475,
-                    CategoryId = 2476,
-                    PlatformId = 2477,
-                    SubCategoryId = 2478,
-                    LexiconEntryTypeId = 2479,
-                    Description = "laboriosam"
+                    Id = 4400,
+                    CategoryId = 4401,
+                    SubCategoryId = 4402,
+                    LexiconFunction = "delectus",
+                    Recommendation = "corrupti",
+                    Notes = "aut"
                 }
             };
 
@@ -34,11 +34,11 @@ namespace UnitTest.Api.Controllers
                 .Setup(m => m.SelectList())
                 .Returns(expectedValue);
 
-            var controller = new LexiconEntryController(mockRepository.Object);
+            var controller = new EntryController(mockRepository.Object);
 
             // Act
             var result = controller.Get();
-            var actualValue = (List<LexiconEntryModel>)result.Value;
+            var actualValue = (List<EntryModel>)result.Value;
 
             // Assert
             CollectionAssert.AreEqual(expectedValue, actualValue);
@@ -48,27 +48,27 @@ namespace UnitTest.Api.Controllers
         public void Get_WithParameter42_ShouldReturnDbModel()
         {
             // Arrange
-            var actualId = 2474;
-            var mockRepository = new Mock<ILexiconEntryRepository>();
-            var expectedValue = new LexiconEntryModel()
+            var actualId = 4399;
+            var mockRepository = new Mock<IEntryRepository>();
+            var expectedValue = new EntryModel()
             {
                 Id = actualId,
-                CategoryId = 2476,
-                PlatformId = 2477,
-                SubCategoryId = 2478,
-                LexiconEntryTypeId = 2479,
-                Description = "laboriosam"
+                CategoryId = 4401,
+                SubCategoryId = 4402,
+                LexiconFunction = "delectus",
+                Recommendation = "corrupti",
+                Notes = "aut"
             };
 
             mockRepository
                 .Setup(m => m.Select(actualId))
                 .Returns(expectedValue);
 
-            var controller = new LexiconEntryController(mockRepository.Object);
+            var controller = new EntryController(mockRepository.Object);
 
             // Act
             var result = controller.Get(actualId) as JsonResult;
-            var actualValue = (LexiconEntryModel)result.Value;
+            var actualValue = (EntryModel)result.Value;
 
             // Assert
             Assert.AreEqual(expectedValue, actualValue);
@@ -78,15 +78,15 @@ namespace UnitTest.Api.Controllers
         public void Post_WithMockedModel_ShouldReturnNewId()
         {
             // Arrange
-            var mockRepository = new Mock<ILexiconEntryRepository>();
-            var dbModel = new LexiconEntryModel();
-            var expectedValue = 2474;
+            var mockRepository = new Mock<IEntryRepository>();
+            var dbModel = new EntryModel();
+            var expectedValue = 4399;
 
             mockRepository
                 .Setup(m => m.Insert(dbModel))
                 .Returns(expectedValue);
 
-            var controller = new LexiconEntryController(mockRepository.Object);
+            var controller = new EntryController(mockRepository.Object);
 
             // Act
             var result = controller.Post(dbModel) as JsonResult;
@@ -100,22 +100,22 @@ namespace UnitTest.Api.Controllers
         public void Put_WithMockedModel_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 2474;
+            var actualId = 4399;
             var dummyString = Guid.NewGuid().ToString().Replace("-", "");
-            var mockRepository = new Mock<ILexiconEntryRepository>();
-            var dbModel = new LexiconEntryModel()
+            var mockRepository = new Mock<IEntryRepository>();
+            var dbModel = new EntryModel()
             {
-                CategoryId = 2475,
-                PlatformId = 2476,
-                SubCategoryId = 2477,
-                LexiconEntryTypeId = 2478,
-                Description = dummyString,
+                CategoryId = 4400,
+                SubCategoryId = 4401,
+                LexiconFunction = dummyString,
+                Recommendation = "delectus",
+                Notes = "voluptatibus",
             };
 
             mockRepository
                 .Setup(m => m.Update(dbModel));
 
-            var controller = new LexiconEntryController(mockRepository.Object);
+            var controller = new EntryController(mockRepository.Object);
 
             // Act
             controller.Put(actualId, dbModel);
@@ -123,8 +123,8 @@ namespace UnitTest.Api.Controllers
             // Assert
             mockRepository
                 .Verify(m => m.Update(
-                        It.Is<LexiconEntryModel>(
-                            i => i.Id == actualId && i.Description == dummyString)), 
+                        It.Is<EntryModel>(
+                            i => i.Id == actualId && i.LexiconFunction == dummyString)), 
                     Times.Once());
         }
 
@@ -132,13 +132,13 @@ namespace UnitTest.Api.Controllers
         public void Delete_WithParameter42_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 2474;
-            var mockRepository = new Mock<ILexiconEntryRepository>();
+            var actualId = 8412;
+            var mockRepository = new Mock<IEntryRepository>();
 
             mockRepository
                 .Setup(m => m.Delete(actualId));
 
-            var controller = new LexiconEntryController(mockRepository.Object);
+            var controller = new EntryController(mockRepository.Object);
 
             // Act
             controller.Delete(actualId);

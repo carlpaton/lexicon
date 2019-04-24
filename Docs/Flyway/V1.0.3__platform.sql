@@ -7,6 +7,7 @@ CREATE TABLE [dbo].[platform](
 ) ON [PRIMARY]
 GO
 
+/*
 INSERT INTO [dbo].[platform]
 (description)
 VALUES
@@ -17,3 +18,4 @@ VALUES
 ('Andriod YAP'),
 ('Andriod Green App')
 GO
+*/

@@ -16,7 +16,7 @@ namespace IntegrationTest
             // Arrange
             var dbModel = new SubCategoryModel()
             {
-                Description = "ratione",
+                Description = "voluptatem",
             };
             var expectedValue = new SubCategoryRepository(AppState.ConnectionString)
                 .Insert(dbModel);
@@ -65,7 +65,7 @@ namespace IntegrationTest
             var expectedValue = 0;
             var dbModel = new SubCategoryModel()
             {
-                Description = "impedit",
+                Description = "quibusdam",
             };
 
             // Act

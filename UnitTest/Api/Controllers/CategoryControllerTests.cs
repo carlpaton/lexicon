@@ -21,8 +21,8 @@ namespace UnitTest.Api.Controllers
             {
                 new CategoryModel()
                 {
-                    Id = 8462,
-                    Description = "aut"
+                    Id = 7453,
+                    Description = "rerum"
                 }
             };
 
@@ -44,12 +44,12 @@ namespace UnitTest.Api.Controllers
         public void Get_WithParameter42_ShouldReturnDbModel()
         {
             // Arrange
-            var actualId = 8461;
+            var actualId = 7452;
             var mockRepository = new Mock<ICategoryRepository>();
             var expectedValue = new CategoryModel()
             {
                 Id = actualId,
-                Description = "aut"
+                Description = "rerum"
             };
 
             mockRepository
@@ -72,7 +72,7 @@ namespace UnitTest.Api.Controllers
             // Arrange
             var mockRepository = new Mock<ICategoryRepository>();
             var dbModel = new CategoryModel();
-            var expectedValue = 8461;
+            var expectedValue = 7452;
 
             mockRepository
                 .Setup(m => m.Insert(dbModel))
@@ -92,7 +92,7 @@ namespace UnitTest.Api.Controllers
         public void Put_WithMockedModel_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 8461;
+            var actualId = 7452;
             var dummyString = Guid.NewGuid().ToString().Replace("-", "");
             var mockRepository = new Mock<ICategoryRepository>();
             var dbModel = new CategoryModel()
@@ -120,7 +120,7 @@ namespace UnitTest.Api.Controllers
         public void Delete_WithParameter42_ShouldBeCalledOnce()
         {
             // Arrange
-            var actualId = 8461;
+            var actualId = 7452;
             var mockRepository = new Mock<ICategoryRepository>();
 
             mockRepository

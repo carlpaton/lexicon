@@ -16,14 +16,12 @@ namespace UnitTest.Business
         List<CategoryBusinessModel> buCategory;
         List<PlatformBusinessModel> buPlatform;
         List<SubCategoryBusinessModel> buSubCategory;
-        List<LexiconEntryTypeBusinessModel> buLexiconEntryType;
 
         Mock<ICategoryRepository> mockCategoryRepository;
         Mock<IPlatformRepository> mockPlatformRepository;
         Mock<ISubCategoryRepository> mockSubCategoryRepository;
-        Mock<ILexiconEntryTypeRepository> mockLexiconEntryTypeRepository;
 
-        LexiconEntryBusiness mockLexiconEntryBusiness;
+        EntryBusiness mockEntryBusiness;
 
         Mock<IMapper> mockMapper;
 
@@ -33,12 +31,10 @@ namespace UnitTest.Business
             buCategory = new List<CategoryBusinessModel>() { new CategoryBusinessModel() { Description = "Property", Id = 1 }};
             buPlatform = new List<PlatformBusinessModel>() { new PlatformBusinessModel() { Description = "FrEnd", Id = 1 }};
             buSubCategory = new List<SubCategoryBusinessModel>() { new SubCategoryBusinessModel() { Description = "LDP", Id = 1 }};
-            buLexiconEntryType = new List<LexiconEntryTypeBusinessModel>() { new LexiconEntryTypeBusinessModel() { Description = "function", Id = 1 }};
 
             mockCategoryRepository = new Mock<ICategoryRepository>();
             mockPlatformRepository = new Mock<IPlatformRepository>();
             mockSubCategoryRepository = new Mock<ISubCategoryRepository>();
-            mockLexiconEntryTypeRepository = new Mock<ILexiconEntryTypeRepository>();
             mockMapper = new Mock<IMapper>();
 
             mockMapper
@@ -53,15 +49,9 @@ namespace UnitTest.Business
                 .Setup(x => x.Map<List<SubCategoryBusinessModel>>(It.IsAny<List<SubCategoryModel>>()))
                 .Returns(buSubCategory);
 
-            mockMapper
-                .Setup(x => x.Map<List<LexiconEntryTypeBusinessModel>>(It.IsAny<List<LexiconEntryTypeModel>>()))
-                .Returns(buLexiconEntryType);
-
-            mockLexiconEntryBusiness = new LexiconEntryBusiness(
+            mockEntryBusiness = new EntryBusiness(
                 mockCategoryRepository.Object, 
-                mockPlatformRepository.Object, 
-                mockSubCategoryRepository.Object, 
-                mockLexiconEntryTypeRepository.Object);
+                mockSubCategoryRepository.Object);
         } 
 
         [TestMethod]
@@ -73,32 +63,13 @@ namespace UnitTest.Business
                 new SelectListItem() { Text = "Property", Value = "1" }
             };
 
-            var classUnderTest = new ViewDataSelectList(mockLexiconEntryBusiness);
+            var classUnderTest = new ViewDataSelectList(mockEntryBusiness);
 
             // Act
             var actual = classUnderTest.CategorySelectList(mockMapper.Object);
 
             // Assert
             // TODO - there must be a better way to compare a list if `SelectListItem`
-            Assert.AreEqual(expected[0].Text, actual[0].Text);
-            Assert.AreEqual(expected[0].Value, actual[0].Value);
-        }
-
-        [TestMethod]
-        public void PlatformSelectList_ShouldCreateList()
-        {
-            // Arrange
-            var expected = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "FrEnd", Value = "1" }
-            };
-
-            var classUnderTest = new ViewDataSelectList(mockLexiconEntryBusiness);
-
-            // Act
-            var actual = classUnderTest.PlatformSelectList(mockMapper.Object);
-
-            // Assert
             Assert.AreEqual(expected[0].Text, actual[0].Text);
             Assert.AreEqual(expected[0].Value, actual[0].Value);
         }
@@ -112,7 +83,7 @@ namespace UnitTest.Business
                 new SelectListItem() { Text = "LDP", Value = "1" }
             };
 
-            var classUnderTest = new ViewDataSelectList(mockLexiconEntryBusiness);
+            var classUnderTest = new ViewDataSelectList(mockEntryBusiness);
 
             // Act
             var actual = classUnderTest.SubCategorySelectList(mockMapper.Object);
@@ -122,23 +93,23 @@ namespace UnitTest.Business
             Assert.AreEqual(expected[0].Value, actual[0].Value);
         }
 
-        [TestMethod]
-        public void LexiconEntryTypeSelectList_ShouldCreateList()
-        {
-            // Arrange
-            var expected = new List<SelectListItem>
-            {
-                new SelectListItem() { Text = "function", Value = "1" }
-            };
+        //[TestMethod]
+        //public void PlatformSelectList_ShouldCreateList()
+        //{
+        //    // Arrange
+        //    var expected = new List<SelectListItem>
+        //    {
+        //        new SelectListItem() { Text = "FrEnd", Value = "1" }
+        //    };
 
-            var classUnderTest = new ViewDataSelectList(mockLexiconEntryBusiness);
+        //    var classUnderTest = new ViewDataSelectList(mockEntryBusiness);
 
-            // Act
-            var actual = classUnderTest.LexiconEntryTypeSelectList(mockMapper.Object);
+        //    // Act
+        //    var actual = classUnderTest.PlatformSelectList(mockMapper.Object);
 
-            // Assert
-            Assert.AreEqual(expected[0].Text, actual[0].Text);
-            Assert.AreEqual(expected[0].Value, actual[0].Value);
-        }
+        //    // Assert
+        //    Assert.AreEqual(expected[0].Text, actual[0].Text);
+        //    Assert.AreEqual(expected[0].Value, actual[0].Value);
+        //}
     }
 }

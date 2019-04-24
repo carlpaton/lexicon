@@ -9,8 +9,8 @@ namespace Web.Models
             : base(options)
         {
         }
-        public DbSet<Web.Models.LexiconEntryViewModel> LexiconEntryViewModel { get; set; }
-
+        
+        // public DbSet<Web.Models.LexiconEntryViewModel> LexiconEntryViewModel { get; set; }
         // public DbSet<Web.Models.CategoryViewModel> CategoryViewModel { get; set; }
     }
 }

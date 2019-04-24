@@ -8,25 +8,23 @@ using System.Linq;
 namespace IntegrationTest
 {
     [TestClass]
-    public class LexiconEntryRepositoryTest
+    public class EntryPlatformRepositoryTest
     {
         [TestMethod]
         public void InsertAndSelect_ShouldEqualInserted()
         {
             // Arrange
-            var dbModel = new LexiconEntryModel()
+            var dbModel = new EntryPlatformModel()
             {
-                CategoryId = 1,
+                EntryId = 6,
                 PlatformId = 1,
-                SubCategoryId = 1,
-                LexiconEntryTypeId = 1,
-                Description = "voluptas",
+                Description = "voluptate",
             };
-            var expectedValue = new LexiconEntryRepository(AppState.ConnectionString)
+            var expectedValue = new EntryPlatformRepository(AppState.ConnectionString)
                 .Insert(dbModel);
 
             // Act
-            var actualValue = new LexiconEntryRepository(AppState.ConnectionString)
+            var actualValue = new EntryPlatformRepository(AppState.ConnectionString)
                 .Select(expectedValue)
                 .Id;
 
@@ -39,29 +37,25 @@ namespace IntegrationTest
             // Arrange
             var expectedValue = 2;
             var dummyString = Guid.NewGuid().ToString().Replace("-", "");
-            var listPoco = new List<LexiconEntryModel>()
+            var listPoco = new List<EntryPlatformModel>()
             {
-                new LexiconEntryModel()
+                new EntryPlatformModel()
                 {
-                    CategoryId = 1,
+                    EntryId = 6,
                     PlatformId = 1,
-                    SubCategoryId = 1,
-                    LexiconEntryTypeId = 1,
                     Description = dummyString,
                 },
-                new LexiconEntryModel()
+                new EntryPlatformModel()
                 {
-                    CategoryId = 1,
-                    PlatformId = 1,
-                    SubCategoryId = 1,
-                    LexiconEntryTypeId = 1,
+                    EntryId = 6,
+                    PlatformId = 2,
                     Description = dummyString,
                 }
             };
 
             // Act
-            new LexiconEntryRepository(AppState.ConnectionString).InsertBulk(listPoco);
-            var actualValue = new LexiconEntryRepository(AppState.ConnectionString)
+            new EntryPlatformRepository(AppState.ConnectionString).InsertBulk(listPoco);
+            var actualValue = new EntryPlatformRepository(AppState.ConnectionString)
                 .SelectList()
                 .Where(x => x.Description.Equals(dummyString))
                 .ToList()
@@ -75,19 +69,17 @@ namespace IntegrationTest
         {
             // Arrange
             var expectedValue = 0;
-            var dbModel = new LexiconEntryModel()
+            var dbModel = new EntryPlatformModel()
             {
-                CategoryId = 1,
+                EntryId = 6,
                 PlatformId = 1,
-                SubCategoryId = 1,
-                LexiconEntryTypeId = 1,
-                Description = "voluptas",
+                Description = "voluptate",
             };
 
             // Act
-            var newId = new LexiconEntryRepository(AppState.ConnectionString).Insert(dbModel);
-            new LexiconEntryRepository(AppState.ConnectionString).Delete(newId);
-            var actualValue = new LexiconEntryRepository(AppState.ConnectionString)
+            var newId = new EntryPlatformRepository(AppState.ConnectionString).Insert(dbModel);
+            new EntryPlatformRepository(AppState.ConnectionString).Delete(newId);
+            var actualValue = new EntryPlatformRepository(AppState.ConnectionString)
                 .Select(newId)
                 .Id;
 
@@ -100,25 +92,23 @@ namespace IntegrationTest
             // Arrange
             var expectedValue = "bar@domain.com";
             var dummyString = Guid.NewGuid().ToString().Replace("-", "");
-            var dbModel = new LexiconEntryModel()
+            var dbModel = new EntryPlatformModel()
             {
-                CategoryId = 1,
+                EntryId = 6,
                 PlatformId = 1,
-                SubCategoryId = 1,
-                LexiconEntryTypeId = 1,
                 Description = dummyString,
             };
 
             // Act
-            var newId = new LexiconEntryRepository(AppState.ConnectionString)
+            var newId = new EntryPlatformRepository(AppState.ConnectionString)
                 .Insert(dbModel);
-            var dbModel2 = new LexiconEntryRepository(AppState.ConnectionString)
+            var dbModel2 = new EntryPlatformRepository(AppState.ConnectionString)
                 .Select(newId);
             dbModel2.Description = expectedValue;
 
-            new LexiconEntryRepository(AppState.ConnectionString)
+            new EntryPlatformRepository(AppState.ConnectionString)
                 .Update(dbModel2);
-            var actualValue = new LexiconEntryRepository(AppState.ConnectionString)
+            var actualValue = new EntryPlatformRepository(AppState.ConnectionString)
                 .Select(newId)
                 .Description;
 

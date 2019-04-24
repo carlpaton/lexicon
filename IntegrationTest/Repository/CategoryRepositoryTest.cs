@@ -16,7 +16,7 @@ namespace IntegrationTest
             // Arrange
             var dbModel = new CategoryModel()
             {
-                Description = "voluptatum",
+                Description = "quibusdam",
             };
             var expectedValue = new CategoryRepository(AppState.ConnectionString)
                 .Insert(dbModel);
@@ -65,7 +65,7 @@ namespace IntegrationTest
             var expectedValue = 0;
             var dbModel = new CategoryModel()
             {
-                Description = "voluptatum",
+                Description = "quibusdam",
             };
 
             // Act

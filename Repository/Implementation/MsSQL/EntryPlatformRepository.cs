@@ -5,53 +5,57 @@ using Repository.Schema;
 
 namespace Repository.MsSQL
 {
-   public class LexiconEntryTypeRepository : MsSQLContext, ILexiconEntryTypeRepository
+   public class EntryPlatformRepository : MsSQLContext, IEntryPlatformRepository
    {
        private readonly string _connectionString;
-        public LexiconEntryTypeRepository(string connectionString) : base(connectionString)
+        public EntryPlatformRepository(string connectionString) : base(connectionString)
         {
             // Shim for BulkInsert
             _connectionString = connectionString;
         }
 
-        public LexiconEntryTypeModel Select(int id)
+        public EntryPlatformModel Select(int id)
         {
-           var storedProc = "sp_select_lexicon_entry_type";
-           return Select<LexiconEntryTypeModel>(storedProc, new { id });
+           var storedProc = "sp_select_entry_platform";
+           return Select<EntryPlatformModel>(storedProc, new { id });
         }
 
-      public List<LexiconEntryTypeModel> SelectList()
+      public List<EntryPlatformModel> SelectList()
       {
-           var storedProc = "sp_selectlist_lexicon_entry_type";
-           return SelectList<LexiconEntryTypeModel>(storedProc);
+           var storedProc = "sp_selectlist_entry_platform";
+           return SelectList<EntryPlatformModel>(storedProc);
       }
 
-      public int Insert(LexiconEntryTypeModel obj)
+      public int Insert(EntryPlatformModel obj)
       {
-           var storedProc = "sp_insert_lexicon_entry_type";
+           var storedProc = "sp_insert_entry_platform";
            var insertObj = new
            {
+                entry_id = obj.EntryId,
+                platform_id = obj.PlatformId,
                 description = obj.Description
            };
            return Insert(storedProc, insertObj);
       }
 
-      public void InsertBulk(List<LexiconEntryTypeModel> listPoco)
+      public void InsertBulk(List<EntryPlatformModel> listPoco)
       {
          foreach (var obj in listPoco)
          {
             // sweet hack, although a new connection per insert will probably be used -_- perhaps it will pool? meh :D
             // probably better to just have the sql command text in the code for a bulk insert
-            new LexiconEntryTypeRepository(_connectionString).Insert(obj);
+            new EntryPlatformRepository(_connectionString).Insert(obj);
          }
       }
 
-      public void Update(LexiconEntryTypeModel obj)
+      public void Update(EntryPlatformModel obj)
       {
-           var storedProc = "sp_update_lexicon_entry_type";
+           var storedProc = "sp_update_entry_platform";
            var updateObj = new
            {
                 id = obj.Id,
+                entry_id = obj.EntryId,
+                platform_id = obj.PlatformId,
                 description = obj.Description
            };
            Update(storedProc, updateObj);
@@ -59,7 +63,7 @@ namespace Repository.MsSQL
 
       public void Delete(int id)
       {
-           var storedProc = "sp_delete_lexicon_entry_type";
+           var storedProc = "sp_delete_entry_platform";
            Delete(storedProc, id);
       }
    }
