@@ -14,8 +14,10 @@ CREATE TABLE [dbo].[entry](
 GO
 
 
+/*
 INSERT INTO [dbo].[entry]
 (category_id,sub_category_id,lexicon_function,recommendation,notes)
 VALUES
 (1,0,'View category directory','All categories','Access to the third level tree links.')
 GO
+*/

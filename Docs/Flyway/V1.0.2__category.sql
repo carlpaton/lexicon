@@ -7,9 +7,10 @@ CREATE TABLE [dbo].[category](
 ) ON [PRIMARY]
 GO
 
-
+/*
 INSERT INTO [dbo].[category]
 (description)
 VALUES
 ('Browse')
 GO
+*/

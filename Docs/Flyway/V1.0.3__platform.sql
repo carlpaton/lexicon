@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[platform](
 GO
 
 
+/*
 INSERT INTO [dbo].[platform]
 (description)
 VALUES
@@ -19,3 +20,4 @@ VALUES
 ('iOS green app'),
 ('Apple watch')
 GO
+*/

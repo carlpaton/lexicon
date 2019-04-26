@@ -8,8 +8,10 @@ CREATE TABLE [dbo].[sub_category](
 GO
 
 
+/*
 INSERT INTO [dbo].[sub_category]
 (description)
 VALUES
 ('Jobs')
 GO
+*/
