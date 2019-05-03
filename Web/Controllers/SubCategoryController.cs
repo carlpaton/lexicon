@@ -95,11 +95,9 @@ namespace Web.Controllers
             return View(vwModel);
         }
 
-        /// <summary>
-        /// TODO ~ GET for `Delete` is pretty shit 
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        // POST: SubCategory/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             _subCategoryRepository.Delete(id);

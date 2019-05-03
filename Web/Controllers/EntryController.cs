@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Repository.Interface;
 using Repository.Schema;
 using Web.Models;
@@ -27,10 +29,56 @@ namespace Web.Controllers
         public IActionResult Index()
         {
             var dbModel = _entryRepository.SelectList();
-            var vwModel = _mapper.Map<List<EntryViewModel>>(dbModel);
-
+            var vwModel = TrucateTextFields(_mapper.Map<List<EntryViewModel>>(dbModel));
+            
             SetSelectList();
             return View(vwModel);
+        }
+
+        // GET: Filter/?searchFilter=x
+        public IActionResult Filter(string searchFilter, int categoryFilterId, int subCategoryFilterId)
+        {
+            var dbModel = _entryRepository.SelectList();
+
+            #region TODO ~ move into a service
+            if (!string.IsNullOrEmpty(searchFilter))
+            {
+                // this is an `OR` operator as `searchFilter` is one field
+                var filterLexiconFunction = dbModel
+                    .Where(x => x.LexiconFunction.Contains(searchFilter))
+                    .ToList();
+
+                var recommendation = dbModel
+                    .Where(x => x.Recommendation.Contains(searchFilter))
+                    .ToList();
+
+                var notes = dbModel
+                    .Where(x => x.Notes.Contains(searchFilter))
+                    .ToList();
+
+                dbModel = new List<EntryModel>();
+                dbModel.AddRange(filterLexiconFunction);
+                dbModel.AddRange(recommendation);
+                dbModel.AddRange(notes);
+                dbModel.OrderBy(x => x.Id);
+            }
+
+            if (categoryFilterId > 0)
+            {
+                // this is an `AND` operator
+                dbModel = dbModel.Where(x => x.CategoryId.Equals((categoryFilterId))).ToList();
+            }   
+            
+            if (subCategoryFilterId > 0)
+            {
+                // this is an `AND` operator
+                dbModel = dbModel.Where(x => x.SubCategoryId.Equals((subCategoryFilterId))).ToList();
+            } 
+            #endregion
+
+            var vwModel = _mapper.Map<List<EntryViewModel>>(dbModel);
+            SetSelectList();
+            return PartialView("_Table", vwModel);
         }
 
         // GET: LexiconEntry/Create
@@ -121,6 +169,35 @@ namespace Web.Controllers
         {
             ViewData["Category_SelectList"] = _viewDataSelectList.CategorySelectList(_mapper);
             ViewData["SubCategory_SelectList"] = _viewDataSelectList.SubCategorySelectList(_mapper);
+        }
+
+        /// <summary>
+        /// TODO ~ DI much? :D
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        private object TrucateTextFields(List<EntryViewModel> list)
+        {
+            var maxLen = 40;
+            var r = new List<EntryViewModel>();
+
+            //TODO ~ there must be a way to do this with linq
+            //var notes = list.Select(w => w.Notes.Substring(0, 15)).ToList();
+
+            foreach (var item in list)
+            {
+                r.Add(new EntryViewModel()
+                {
+                    Id = item.Id,
+                    CategoryId = item.CategoryId,
+                    SubCategoryId = item.SubCategoryId,
+                    Notes = item.Notes.Length > maxLen ? item.Notes.Substring(0, maxLen) + "..." : item.Notes,
+                    Recommendation = item.Recommendation.Length > maxLen ? item.Recommendation.Substring(0, maxLen) + "..." : item.Recommendation,
+                    LexiconFunction = item.LexiconFunction.Length > maxLen ? item.LexiconFunction.Substring(0, maxLen) + "..." : item.LexiconFunction
+                });
+            }
+
+            return r;
         }
     }
 }

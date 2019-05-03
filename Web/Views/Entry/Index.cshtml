@@ -17,56 +17,54 @@
     </div>
 }
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.LexiconFunction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Recommendation)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SubCategoryId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.LexiconFunction)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Recommendation)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DropDownListFor(modelItem => item.CategoryId, (List<SelectListItem>)ViewData["Category_SelectList"], new { @class = "form-control", @disabled = "disabled" })
-            </td>
-            <td>
-                @Html.DropDownListFor(modelItem => item.SubCategoryId, (List<SelectListItem>)ViewData["SubCategory_SelectList"], "n/a", new { @class = "form-control", @disabled = "disabled" })
-            </td>
-            <td>
-                <div class="cp-link">
-                    <form asp-action="Delete" asp-route-id="@item.Id">
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Index" asp-route-id="@item.Id" asp-controller="EntryPlatform">Platform</a> |
-                        <input type="submit" value="Delete" class="btn-link" onclick="return confirm('Are you sure you want to delete this entry?');" />
-                    </form>
-                </div>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group">
+            Filter results below.
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Text filter..." id="searchFilter" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Category</label>
+            @Html.DropDownList(
+                "categoryFilterId",
+                (List<SelectListItem>) ViewData["Category_SelectList"],
+                "-- Optional --",
+                new {@class = "form-control categoryFilterId", @onchange = "Filter();"})
+        </div>
+        <div class="form-group">
+            <label class="control-label">Sub Category</label>
+            @Html.DropDownList(
+                "subCategoryFilterId",
+                (List<SelectListItem>) ViewData["SubCategory_SelectList"],
+                "-- Optional --",
+                new {@class = "form-control subCategoryFilterId", @onchange = "Filter();"})
+        </div>
+    </div>
+</div>
+
+<div id="divResults">
+    <partial name="~/Views/Entry/_Table.cshtml" model="Model" />
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#searchFilter").change(function() {
+            Filter();
+        });
+    });
+
+    function Filter() {
+        var searchFilter = $("#searchFilter").val();
+        var categoryFilterId = $(".categoryFilterId option:selected").val();
+        var subCategoryFilterId = $(".subCategoryFilterId option:selected").val();
+
+        console.log("searchFilter=" + searchFilter);
+        console.log("categoryFilterId=" + categoryFilterId);
+
+        var url = "@Url.Action("Filter")" + "?searchFilter=" + searchFilter + "&categoryFilterId=" + categoryFilterId + "&subCategoryFilterId=" + subCategoryFilterId;
+        $('#divResults').load(url);
+    }
+</script>
