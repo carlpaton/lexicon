@@ -24,6 +24,9 @@ COPY ./tmpwebmvc/UnitTest/. ./UnitTest/
 COPY ./tmpwebmvc/Web/. ./Web/
 RUN dotnet publish -c Release -o out
 
+# Unit tests
+RUN dotnet test "./UnitTest/UnitTest.csproj" -c Release --no-build --no-restore
+
 # Build runtime image
 FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
