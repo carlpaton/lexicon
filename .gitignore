@@ -9,3 +9,6 @@ packages
 .vs/config/applicationhost.config
 bin
 obj
+
+Docs/Docker-Compose/tmpwebmvc
+Docs/Docker-Compose/tmpflyway
