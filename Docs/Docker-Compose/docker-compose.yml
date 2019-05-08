@@ -12,7 +12,9 @@ services:
 
   lexicon-flywaycopy:
     container_name: "lexicon-flywaycopy"
-    build: ./
+    build:
+      context: ./
+      dockerfile: ./flyway/Dockerfile
     image: lexicon-flywaycopy
     volumes:
       - lexicon-flyway:/flyway/sql
@@ -33,7 +35,15 @@ services:
     volumes:
       - lexicon-flyway:/flyway/sql
     depends_on:
-      - lexicon-baseline      
+      - lexicon-baseline  
+      
+  lexicon-webmvc:
+    container_name: "lexicon-webmvc"
+    build:
+      context: ./
+      dockerfile: ./webmvc/Dockerfile
+    ports:
+      - "8080:80"
 
 volumes:
     lexicon-flyway:

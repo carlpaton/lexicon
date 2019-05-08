@@ -18,7 +18,7 @@ Clear-Host
 Write-Host $debugLog `n -f green
 
 function ComposeUp {
-	#START DATABASE CONTAINER(S) AND RUN DETACHED
+	#START DB
 	Write-Host "* Run container detatched (" $imageName ")" -f magenta
 	docker-compose up -d $dbContainer
 
@@ -31,15 +31,25 @@ if ($Reset) {
 	Write-Host "* Kill and delete containers/volumes/network" -f magenta
 	docker-compose down -v
 	
+	#BUILD WEBMVC (~ this can be done with a temp builder image, see https://github.com/carlpaton/VodacommessagingXml2sms/blob/master/Dockerfile)
+	#WEBMVC (this is shit, rather build in a container per the above, will also then need to clone from https://github.com/carlpaton/lexicon)
+	#https://docs.docker.com/engine/examples/dotnetcore/
+	#Write-Host "* Building lexicon Web project" -f magenta
+	#dotnet build C:\Dev\lexicon\Web\Web.csproj
+
 	#SPIN UP
 	ComposeUp
 
 	#COPY NEW SQL FILES
 	$executingScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
-	$flywaySourceDirectory = $executingScriptDirectory -replace 'Docker-Compose','Flyway'
-	Remove-Item -PATH flyway -Recurse -ErrorAction Ignore
-	Copy-Item $flywaySourceDirectory -Destination $executingScriptDirectory"\flyway" -Recurse	
-	
+	$flywaySourceDirectory = $executingScriptDirectory -replace 'Docker-Compose','flyway'
+	Remove-Item -PATH tmpflyway -Recurse -ErrorAction Ignore
+	Copy-Item $flywaySourceDirectory -Destination $executingScriptDirectory"\tmpflyway" -Recurse	
+
+	#GIT CLONE
+	Remove-Item -PATH tmpwebmvc -Recurse -ErrorAction Ignore
+	git clone https://github.com/carlpaton/lexicon 'C:\Dev\lexicon\Docs\Docker-Compose\tmpwebmvc'
+
 	#BUILD
 	Write-Host "* Docker compose build" -f magenta
 	docker-compose build --no-cache	
@@ -73,8 +83,12 @@ if ($Reset) {
 		docker logs lexicon-migrate	
 	}
 	
+	#START MCVWEB
+	docker-compose up -d lexicon-webmvc
+
 	#CLEAN UP
-	Remove-Item -PATH flyway -Recurse -ErrorAction Ignore	
+	Remove-Item -PATH tmpflyway -Recurse -ErrorAction Ignore	
+	Remove-Item -PATH tmpwebmvc -Recurse -ErrorAction Ignore	
 } 
 else 
 {
