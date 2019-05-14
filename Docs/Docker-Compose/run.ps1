@@ -17,7 +17,7 @@ $debugLog += " -Debug " + $Debug
 Clear-Host
 Write-Host $debugLog `n -f green
 
-function ComposeUp {
+function StartDb {
 	#START DB
 	Write-Host "* Run container detatched (" $imageName ")" -f magenta
 	docker-compose up -d $dbContainer
@@ -26,19 +26,16 @@ function ComposeUp {
 	Start-Sleep $globalWait
 }
 
+function StartWebMvc {
+	#START MCVWEB
+	docker-compose up -d lexicon-webmvc
+}
+
 if ($Reset) {
 	#KILL AND DELETE
 	Write-Host "* Kill and delete containers/volumes/network" -f magenta
 	docker-compose down -v
-	
-	#BUILD WEBMVC (~ this can be done with a temp builder image, see https://github.com/carlpaton/VodacommessagingXml2sms/blob/master/Dockerfile)
-	#WEBMVC (this is shit, rather build in a container per the above, will also then need to clone from https://github.com/carlpaton/lexicon)
-	#https://docs.docker.com/engine/examples/dotnetcore/
-	#Write-Host "* Building lexicon Web project" -f magenta
-	#dotnet build C:\Dev\lexicon\Web\Web.csproj
-
-	#SPIN UP
-	ComposeUp
+	StartDb
 
 	#COPY NEW SQL FILES
 	$executingScriptDirectory = Split-Path -Path $MyInvocation.MyCommand.Definition -Parent
@@ -83,8 +80,7 @@ if ($Reset) {
 		docker logs lexicon-migrate	
 	}
 	
-	#START MCVWEB
-	docker-compose up -d lexicon-webmvc
+	StartWebMvc
 
 	#CLEAN UP
 	Remove-Item -PATH tmpflyway -Recurse -ErrorAction Ignore	
@@ -93,7 +89,8 @@ if ($Reset) {
 else 
 {
 	#SPIN UP
-	ComposeUp
+	StartDb
+	StartWebMvc
 }
 
 #DEBUG
