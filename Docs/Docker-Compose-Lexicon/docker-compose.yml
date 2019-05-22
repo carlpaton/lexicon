@@ -10,40 +10,44 @@ services:
     ports:
       - "1433:1433"
 
-  lexicon-flywaycopy:
-    container_name: "lexicon-flywaycopy"
-    build:
-      context: ./
-      dockerfile: ./flyway/Dockerfile
-    image: lexicon-flywaycopy
+  lexicon-git-clone:
+    container_name: "lexicon-git-clone"
+    build: ./git-clone
+    image: git_clone
     volumes:
-      - lexicon-flyway:/flyway/sql
+      - flyway_sql:/flyway/sql
+      - flyway_raw_sql:/git_raw_sql
+      - flyway_raw_code:/git_raw_code
     depends_on:
-      - lexicon-db  
+      - lexicon-db 
       
   lexicon-baseline:
     container_name: "lexicon-baseline"
     image: "boxfuse/flyway:5.1"
     command: -url=jdbc:jtds:sqlserver://lexicon-db:1433/lexicon -user=sa -password=Password123 baseline
     depends_on:
-      - lexicon-flywaycopy
+      - lexicon-git-clone
 
   lexicon-migrate:
     container_name: "lexicon-migrate"
     image: "boxfuse/flyway:5.1"
     command: -url=jdbc:jtds:sqlserver://lexicon-db:1433/lexicon -user=sa -password=Password123 migrate
     volumes:
-      - lexicon-flyway:/flyway/sql
+      - flyway_sql:/flyway/sql
     depends_on:
-      - lexicon-baseline  
-      
+      - lexicon-baseline
+
   lexicon-webmvc:
     container_name: "lexicon-webmvc"
     build:
-      context: ./
-      dockerfile: ./webmvc/Dockerfile
+      context: ./../../
+      dockerfile: ./Docs/Docker-Compose-Lexicon/webmvc/Dockerfile
     ports:
       - "8080:80"
+    volumes:
+      - flyway_raw_code:/git_raw_code
 
 volumes:
-    lexicon-flyway:
+    flyway_sql:
+    flyway_raw_sql:
+    flyway_raw_code:
