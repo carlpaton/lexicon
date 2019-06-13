@@ -12,6 +12,7 @@ using Business;
 using AutoMapper;
 using Repository.Schema;
 using Business.Models;
+using System;
 
 namespace Web
 {
@@ -39,7 +40,7 @@ namespace Web
             services.AddDbContext<DummyContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DummyContext")));
 
-            var connectionString = Configuration.GetConnectionString("ConnMsSQL");
+            var connectionString = (Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION") ?? Configuration.GetConnectionString("ConnMsSQL"));
             var lexiconEntryBusiness = new EntryBusiness(
                     new CategoryRepository(connectionString),                      
                     new SubCategoryRepository(connectionString),
