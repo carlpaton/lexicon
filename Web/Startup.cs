@@ -13,17 +13,18 @@ using AutoMapper;
 using Repository.Schema;
 using Business.Models;
 using System;
+using Web.Services;
 
 namespace Web
 {
     public class Startup
     {
+        public IConfiguration _configuration { get; }
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -38,9 +39,15 @@ namespace Web
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddDbContext<DummyContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DummyContext")));
+                    options.UseSqlServer(_configuration.GetConnectionString("DummyContext")));
 
-            var connectionString = (Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION") ?? Configuration.GetConnectionString("ConnMsSQL"));
+            // Services
+            var localIPv4 = new LocalIPv4();
+            services.AddSingleton<ILocalIPv4>(localIPv4);
+
+            var connectionString = (GetEnvConnectionWithLocalMachineIpSubsitution(localIPv4) ?? _configuration.GetConnectionString("ConnMsSQL"));
+            Environment.SetEnvironmentVariable("ActualConnectionString", connectionString);
+
             var lexiconEntryBusiness = new EntryBusiness(
                     new CategoryRepository(connectionString),                      
                     new SubCategoryRepository(connectionString),
@@ -59,6 +66,24 @@ namespace Web
             // Business
             services.AddSingleton<IEntryBusiness>(lexiconEntryBusiness);
             services.AddSingleton<IViewDataSelectList>(new ViewDataSelectList(lexiconEntryBusiness));
+        }
+
+        /// <summary>
+        /// TOOD ~ move to a service, also maybe think of a better name? Im tired :D
+        /// </summary>
+        /// <param name="localIPv4"></param>
+        /// <returns></returns>
+        private string GetEnvConnectionWithLocalMachineIpSubsitution(LocalIPv4 localIPv4)
+        {
+            if (Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION") == null)
+                return null;
+
+            var conn = Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION");
+            //conn = "Server=@@MACHINE_NAME@@,1433;Database=lexicon;User Id=sa;Password=Password123;";
+
+            conn = conn.Replace("@@MACHINE_NAME@@", localIPv4.GetLocalIPv4(System.Net.NetworkInformation.NetworkInterfaceType.Ethernet));
+
+            return conn;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,0 +1,17 @@
+﻿@model Web.Models.HoeViewModel
+
+@{
+    ViewData["Title"] = "Hoe";
+}
+
+<h2>ConfSql</h2>
+@Html.Raw(Model.ConfSql);
+
+<h2>EnvSql</h2>
+@Html.Raw(Model.EnvSql);
+
+<h2>HostIp</h2>
+@Html.Raw(Model.HostIp);
+
+<h2>ActualConnectionString</h2>
+@Html.Raw(Model.ActualConnectionString );
