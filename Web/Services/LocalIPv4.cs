@@ -4,6 +4,14 @@ using System.Net.Sockets;
 
 namespace Web.Services
 {
+    /// <summary>
+    /// Hack used with AWS ESC (Fargate)
+    /// 
+    /// Assuming the lexicon-web and lexicon-sql containers had the same IP this function is then used to help update the database connection string.
+    /// `@@MACHINE_NAME@@` or what ever is string replaced with the correct IP.
+    /// 
+    /// Not sure why we cannot use DHCP here and just use the container names like in `docker-compose`?
+    /// </summary>
     public interface ILocalIPv4
     {
         string GetLocalIPv4(NetworkInterfaceType _type);

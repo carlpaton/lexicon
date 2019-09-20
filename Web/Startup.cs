@@ -45,7 +45,10 @@ namespace Web
             var localIPv4 = new LocalIPv4();
             services.AddSingleton<ILocalIPv4>(localIPv4);
 
-            var connectionString = (GetEnvConnectionWithLocalMachineIpSubsitution(localIPv4) ?? _configuration.GetConnectionString("ConnMsSQL"));
+            var publicIP = new PublicExternalIP();
+            services.AddSingleton<IPublicIP>(publicIP);
+
+            var connectionString = (GetEnvConnectionWithLocalMachineIpSubsitution(localIPv4, publicIP) ?? _configuration.GetConnectionString("ConnMsSQL"));
             Environment.SetEnvironmentVariable("ActualConnectionString", connectionString);
 
             var lexiconEntryBusiness = new EntryBusiness(
@@ -69,11 +72,11 @@ namespace Web
         }
 
         /// <summary>
-        /// TOOD ~ move to a service, also maybe think of a better name? Im tired :D
+        /// TOOD ~ kill this code smell with FIRE! Meh.
         /// </summary>
         /// <param name="localIPv4"></param>
         /// <returns></returns>
-        private string GetEnvConnectionWithLocalMachineIpSubsitution(LocalIPv4 localIPv4)
+        private string GetEnvConnectionWithLocalMachineIpSubsitution(ILocalIPv4 localIPv4, IPublicIP publicIP)
         {
             if (Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION") == null)
                 return null;
@@ -81,7 +84,11 @@ namespace Web
             var conn = Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION");
             //conn = "Server=@@MACHINE_NAME@@,1433;Database=lexicon;User Id=sa;Password=Password123;";
 
-            conn = conn.Replace("@@MACHINE_NAME@@", localIPv4.GetLocalIPv4(System.Net.NetworkInformation.NetworkInterfaceType.Ethernet));
+            if (Environment.GetEnvironmentVariable("SUBSTITUTE_LOCAL_IP") != null) // dumbass this means if you set this env key value to `sweet blue balls` it will work
+                conn = conn.Replace("@@MACHINE_NAME@@", localIPv4.GetLocalIPv4(System.Net.NetworkInformation.NetworkInterfaceType.Ethernet));
+
+            if (Environment.GetEnvironmentVariable("SUBSTITUTE_PUBLIC_IP") != null)
+                conn = conn.Replace("@@MACHINE_NAME@@", publicIP.GetPublicIP());
 
             return conn;
         }

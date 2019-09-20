@@ -4,14 +4,21 @@
     ViewData["Title"] = "Hoe";
 }
 
-<h2>ConfSql</h2>
+<h3>ActualConnectionString</h3>
+@Html.Raw(Model.ActualConnectionString);
+
+<h3>Configuration Variables</h3>
 @Html.Raw(Model.ConfSql);
 
-<h2>EnvSql</h2>
-@Html.Raw(Model.EnvSql);
+<h3>IPs</h3>
+<ul>
+    <li>@Html.Raw(Model.HostIp);</li>
+    <li>@Html.Raw(Model.PublicIp);</li>
+</ul>
 
-<h2>HostIp</h2>
-@Html.Raw(Model.HostIp);
-
-<h2>ActualConnectionString</h2>
-@Html.Raw(Model.ActualConnectionString );
+<h3>Environment Variables</h3>
+<ul>
+    <li>@Html.Raw(Model.EnvSql);</li>
+    <li>@Html.Raw(Model.EnvSubstituteLocalIp);</li>
+    <li>@Html.Raw(Model.EnvSubstitutePublicIp);</li>
+</ul>
