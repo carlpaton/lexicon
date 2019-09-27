@@ -17,7 +17,9 @@ namespace Web.Services
     {
         public string GetPublicIP()
         {
-            return new WebClient().DownloadString("http://icanhazip.com");
+            return new WebClient()
+                .DownloadString("http://icanhazip.com")
+                .Trim();
         }
     }
 }

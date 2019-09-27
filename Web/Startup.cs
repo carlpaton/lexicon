@@ -82,7 +82,7 @@ namespace Web
                 return null;
 
             var conn = Environment.GetEnvironmentVariable("LEXICON_SQL_CONNECTION");
-            //conn = "Server=@@MACHINE_NAME@@,1433;Database=lexicon;User Id=sa;Password=Password123;";
+            conn = "Server=@@MACHINE_NAME@@,1433;Database=lexicon;User Id=sa;Password=Password123;";
 
             if (Environment.GetEnvironmentVariable("SUBSTITUTE_LOCAL_IP") != null) // dumbass this means if you set this env key value to `sweet blue balls` it will work
                 conn = conn.Replace("@@MACHINE_NAME@@", localIPv4.GetLocalIPv4(System.Net.NetworkInformation.NetworkInterfaceType.Ethernet));
